@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ldars.oa.dao.OAOrgWorktimeMapper" >
+  <resultMap id="BaseResultMap" type="com.ldars.oa.model.OAOrgWorktime" >
+    <result column="org_id" property="orgId" jdbcType="VARCHAR" />
+    <result column="am_hour" property="amHour" jdbcType="INTEGER" />
+    <result column="am_minute" property="amMinute" jdbcType="INTEGER" />
+    <result column="pm_hour" property="pmHour" jdbcType="INTEGER" />
+    <result column="pm_minute" property="pmMinute" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ldars.oa.model.OAOrgWorktime" >
+    insert into admin_org_worktime (org_id, am_hour, am_minute, 
+      pm_hour, pm_minute, STATUS
+      )
+    values (#{orgId,jdbcType=VARCHAR}, #{amHour,jdbcType=INTEGER}, #{amMinute,jdbcType=INTEGER}, 
+      #{pmHour,jdbcType=INTEGER}, #{pmMinute,jdbcType=INTEGER}, #{status,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ldars.oa.model.OAOrgWorktime" >
+    insert into admin_org_worktime
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="amHour != null" >
+        am_hour,
+      </if>
+      <if test="amMinute != null" >
+        am_minute,
+      </if>
+      <if test="pmHour != null" >
+        pm_hour,
+      </if>
+      <if test="pmMinute != null" >
+        pm_minute,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="amHour != null" >
+        #{amHour,jdbcType=INTEGER},
+      </if>
+      <if test="amMinute != null" >
+        #{amMinute,jdbcType=INTEGER},
+      </if>
+      <if test="pmHour != null" >
+        #{pmHour,jdbcType=INTEGER},
+      </if>
+      <if test="pmMinute != null" >
+        #{pmMinute,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

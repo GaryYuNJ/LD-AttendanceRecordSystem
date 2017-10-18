@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ldars.oa.dao.OAOrganizationMapper" >
+  <resultMap id="BaseResultMap" type="com.ldars.oa.model.OAOrganization" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="expanded" property="expanded" jdbcType="BIT" />
+    <result column="isleaf" property="isleaf" jdbcType="BIT" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="loaded" property="loaded" jdbcType="BIT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent" property="parent" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="contactnumber" property="contactnumber" jdbcType="VARCHAR" />
+    <result column="contactperson" property="contactperson" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="modify_user" property="modifyUser" jdbcType="VARCHAR" />
+    <result column="orgno" property="orgno" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="group_id" property="groupId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, expanded, isleaf, level, loaded, name, parent, address, contactnumber, contactperson, 
+    create_time, create_user, modify_time, modify_user, orgno, status, group_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin_organization
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from admin_organization
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ldars.oa.model.OAOrganization" >
+    insert into admin_organization (id, expanded, isleaf, 
+      level, loaded, name, parent, 
+      address, contactnumber, contactperson, 
+      create_time, create_user, modify_time, 
+      modify_user, orgno, status, 
+      group_id)
+    values (#{id,jdbcType=VARCHAR}, #{expanded,jdbcType=BIT}, #{isleaf,jdbcType=BIT}, 
+      #{level,jdbcType=INTEGER}, #{loaded,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{parent,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{contactnumber,jdbcType=VARCHAR}, #{contactperson,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{modifyUser,jdbcType=VARCHAR}, #{orgno,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{groupId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ldars.oa.model.OAOrganization" >
+    insert into admin_organization
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="expanded != null" >
+        expanded,
+      </if>
+      <if test="isleaf != null" >
+        isleaf,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="loaded != null" >
+        loaded,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parent != null" >
+        parent,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="contactnumber != null" >
+        contactnumber,
+      </if>
+      <if test="contactperson != null" >
+        contactperson,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="modifyUser != null" >
+        modify_user,
+      </if>
+      <if test="orgno != null" >
+        orgno,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="expanded != null" >
+        #{expanded,jdbcType=BIT},
+      </if>
+      <if test="isleaf != null" >
+        #{isleaf,jdbcType=BIT},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="loaded != null" >
+        #{loaded,jdbcType=BIT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        #{parent,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contactnumber != null" >
+        #{contactnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="contactperson != null" >
+        #{contactperson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUser != null" >
+        #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="orgno != null" >
+        #{orgno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ldars.oa.model.OAOrganization" >
+    update admin_organization
+    <set >
+      <if test="expanded != null" >
+        expanded = #{expanded,jdbcType=BIT},
+      </if>
+      <if test="isleaf != null" >
+        isleaf = #{isleaf,jdbcType=BIT},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="loaded != null" >
+        loaded = #{loaded,jdbcType=BIT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null" >
+        parent = #{parent,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contactnumber != null" >
+        contactnumber = #{contactnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="contactperson != null" >
+        contactperson = #{contactperson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUser != null" >
+        modify_user = #{modifyUser,jdbcType=VARCHAR},
+      </if>
+      <if test="orgno != null" >
+        orgno = #{orgno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ldars.oa.model.OAOrganization" >
+    update admin_organization
+    set expanded = #{expanded,jdbcType=BIT},
+      isleaf = #{isleaf,jdbcType=BIT},
+      level = #{level,jdbcType=INTEGER},
+      loaded = #{loaded,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
+      parent = #{parent,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      contactnumber = #{contactnumber,jdbcType=VARCHAR},
+      contactperson = #{contactperson,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      modify_user = #{modifyUser,jdbcType=VARCHAR},
+      orgno = #{orgno,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      group_id = #{groupId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
