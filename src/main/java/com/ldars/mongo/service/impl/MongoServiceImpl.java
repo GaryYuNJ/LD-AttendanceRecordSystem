@@ -5,13 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -19,9 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.ldars.controller.OpenAPIControl;
-import com.ldars.dao.UserModelMapper;
-import com.ldars.model.UserModel;
 import com.ldars.mongo.bo.AttendenceBo;
 import com.ldars.mongo.bo.AttendenceReportBo;
 import com.ldars.mongo.dao.AttendenceDao;
@@ -29,13 +24,12 @@ import com.ldars.mongo.dao.AttendenceReportDao;
 import com.ldars.mongo.service.IMongoService;
 import com.ldars.oa.dao.OAUserMapper;
 import com.ldars.oa.dao.UserOtherInfoMapper;
-import com.ldars.oa.model.OAUser;
 import com.ldars.oa.model.UserOtherInfo;
 
 @Service("mongoService")
 public class MongoServiceImpl implements IMongoService {
 
-	final static Logger log = Logger.getLogger(MongoServiceImpl.class);
+	final static Logger logger = Logger.getLogger(MongoServiceImpl.class);
 	
 	@Autowired
 	private AttendenceDao attendenceDao;
@@ -56,28 +50,28 @@ public class MongoServiceImpl implements IMongoService {
 	@Override
 	public void refreshALLAttendenceReport() throws ParseException {
 		
-		List<String> months = new ArrayList<String>();
-		months.add("2017-09");
-		months.add("2017-08");
-		months.add("2017-07");
-		months.add("2017-06");
-		months.add("2017-05");
-		months.add("2017-04");
-		months.add("2017-03");
-		months.add("2017-02");
-		months.add("2017-01");
-		months.add("2016-12");
-		months.add("2016-11");
-		months.add("2016-10");
-		months.add("2016-09");
-		months.add("2016-08");
-		months.add("2016-07");
-		months.add("2016-06");
-		months.add("2016-05");
-		
-		for(String month : months){
-			refreshAttendenceReportByMonth(month);
-		}
+//		List<String> months = new ArrayList<String>();
+//		months.add("2017-09");
+//		months.add("2017-08");
+//		months.add("2017-07");
+//		months.add("2017-06");
+//		months.add("2017-05");
+//		months.add("2017-04");
+//		months.add("2017-03");
+//		months.add("2017-02");
+//		months.add("2017-01");
+//		months.add("2016-12");
+//		months.add("2016-11");
+//		months.add("2016-10");
+//		months.add("2016-09");
+//		months.add("2016-08");
+//		months.add("2016-07");
+//		months.add("2016-06");
+//		months.add("2016-05");
+//		
+//		for(String month : months){
+//			refreshAttendenceReportByMonth(month);
+//		}
 		
 	}
 
@@ -85,17 +79,16 @@ public class MongoServiceImpl implements IMongoService {
 	public void refreshAttendenceReportByMonth(String month) throws ParseException {
 		// TODO Auto-generated method stub
 		SimpleDateFormat sf = new  SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat sf1 = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat sf2 = new  SimpleDateFormat("HH:mm");
 		
 		Calendar startCalendar = Calendar.getInstance();//日历对象 
 		Calendar startCalendarTMP = Calendar.getInstance();//用于for循环获取当月的日期列表
-		startCalendar.setTime(sf.parse(month+"-24"));//设置日期  
+		startCalendar.setTime(sf.parse(month+"-24"));//设置起始日期  
 		startCalendar.add(Calendar.MONTH, -1);//月份减一 
         Date startDateTime = startCalendar.getTime();
         
         Calendar endCalendar = Calendar.getInstance();//日历对象 
-        endCalendar.setTime(sf.parse(month+"-24"));//设置日期
+        endCalendar.setTime(sf.parse(month+"-24"));//设置结束日期
         if(endCalendar.getTime().after(new Date())){
         	endCalendar.setTime(new Date());
         }
@@ -271,7 +264,8 @@ public class MongoServiceImpl implements IMongoService {
 				attendenceReportDao.saveOrUpdate(aRBo);
 			}
 			catch(Exception e){
-				e.printStackTrace();
+				//e.printStackTrace();
+				logger.error("refreshData() error. ",e);
 			}
 		}
 		
