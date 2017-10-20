@@ -65,8 +65,12 @@ public class AttendenceReportDao {
 		public List<AttendenceReportBo> selectPagebyConditions(String company, String department, String month, String realName, String mobile, 
 				BootstrapTableData pager, String dataType){
 			Query query = new Query();
-			query.skip((pager.getPage()-1)*pager.getPageSize());
-			query.limit(pager.getPageSize());
+			//page为null时，一次查询所有记录
+			if(null != pager){
+				query.skip((pager.getPage()-1)*pager.getPageSize());
+				query.limit(pager.getPageSize());
+			}
+			
 			Order order = new Order(Direction.ASC, "sequence");
 			
 			Criteria criteria = new Criteria();
@@ -107,10 +111,13 @@ public class AttendenceReportDao {
 			Long total = mongoTemplate.count(query, AttendenceReportBo.class);
 			List<AttendenceReportBo> arbos = mongoTemplate.find(query, AttendenceReportBo.class);
 			
-			//pager.setRows(arbos);
-			pager.setTotal(total);
+			if(null != pager){
+				pager.setTotal(total);
+			}
+			
 			return arbos;
 		}
+		
 		
 //		public AttendenceReportBo findById(String id){
 //			Query query = new Query();

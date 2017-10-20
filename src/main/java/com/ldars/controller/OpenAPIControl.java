@@ -168,8 +168,8 @@ public class OpenAPIControl {
 			RequestMethod.POST },produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String attendenceReportList(HttpServletRequest request, @RequestParam("month")  String month, @RequestParam("company")  String company, 
-			String department, String mobile, String userName, String dataType, @RequestParam("limit") Integer limit, 
-			@RequestParam("offset") Integer offset, ModelMap model){
+			String department, String mobile, String userName, String dataType, Integer limit, 
+			Integer offset, ModelMap model){
 		
 		//如果用户未登陆
 		if(null == request.getSession().getAttribute("user") || StringUtils.isNullOrEmpty(request.getSession().getAttribute("user").toString())){
@@ -180,12 +180,26 @@ public class OpenAPIControl {
 		if("1".equals(company)){
 			company = "";
 		}
-		BootstrapTableData bData = new BootstrapTableData();
-		bData.setPage(offset/limit +1);
-		bData.setPageSize(limit);
 		
-		// dataType 0 全部记录，1 异常记录
-		List<AttendenceReportBo> arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, mobile, bData,dataType);
+		BootstrapTableData bData = new BootstrapTableData();
+		List<AttendenceReportBo> arBos;
+		//判断是分页查还是全量查询
+		if(null == offset || null == limit){
+			arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, mobile,null,dataType);
+			
+			
+			if(null != arBos && arBos.size() > 0){
+				bData.setPage(1);
+				bData.setPageSize(arBos.size());
+				bData.setTotal(Long.parseLong(arBos.size()+""));
+			}
+		}else{
+			bData.setPage(offset/limit +1);
+			bData.setPageSize(limit);
+			// dataType 0 全部记录，1 异常记录
+			arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, mobile, bData,dataType);
+		}
+		
 		if(null != arBos && arBos.size() > 0){
 			List<Map<String,String>> map = new ArrayList<Map<String,String>>();
 			//重新组织数据,用于页面展示
@@ -201,6 +215,7 @@ public class OpenAPIControl {
 			bData.setPage(0);
 			bData.setRows(new Object());
 			bData.setTotal(0L);
+			bData.setPageSize(0);
 		}
 		
 		return JSON.toJSONString(bData);
@@ -211,8 +226,8 @@ public class OpenAPIControl {
 	@ResponseBody
 	public String attendenceDailyReportList(HttpServletRequest request, @RequestParam("startDate")  String startDateStr, 
 			@RequestParam("endDate")  String endDateStr, @RequestParam("company")  String company, String department,
-			String mobile, String userName, String dataType, @RequestParam("limit") Integer limit, 
-			@RequestParam("offset") Integer offset, ModelMap model){
+			String mobile, String userName, String dataType, Integer limit, 
+			 Integer offset, ModelMap model){
 		
 		SimpleDateFormat sfDay = new  SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sfDate = new  SimpleDateFormat("yyyy-MM");
@@ -310,8 +325,9 @@ public class OpenAPIControl {
 					//从月度columns中，剔除所选时间范围之外的
 					//只判断日期字段, 并且在所选时间范围外，不加入表单头
 					//month 与 startDate 可能不一样，都要判断
-					if((key.contains(month) || key.contains(lastMonth)) && 
-							(sf.parse(key).before(startDate) || sf.parse(key).after(endDate))){
+					//去掉月份的展示
+					if(key.equals("month") ||
+							((key.contains(month) || key.contains(lastMonth)) && (sf.parse(key).before(startDate) || sf.parse(key).after(endDate)))){
 							continue;
 					}
 					
