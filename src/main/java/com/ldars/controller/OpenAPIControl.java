@@ -1,10 +1,15 @@
 package com.ldars.controller;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,185 +82,100 @@ public class OpenAPIControl {
 	
 	List<SelectCompany> getCompanyList(String user){
 		//pz001  admin000 admin001 admin002 admin003 admin004
-				//临时应急，先写死
-				SelectCompany company1 = new SelectCompany();
-				company1.setName("全部公司");
-				company1.setValue("1");
-				SelectCompany company2 = new SelectCompany();
-				company2.setName("江苏事业部");
-				company2.setValue("江苏事业部");
-				SelectCompany company3 = new SelectCompany();
-				company3.setName("一公司");
-				company3.setValue("一公司");
-				SelectCompany company4 = new SelectCompany();
-				company4.setName("二公司");
-				company4.setValue("二公司");
-				SelectCompany company5 = new SelectCompany();
-				company5.setName("三公司");
-				company5.setValue("三公司");
-				SelectCompany company6 = new SelectCompany();
-				company6.setName("四公司");
-				company6.setValue("四公司");
-				SelectCompany company7 = new SelectCompany();
-				company7.setName("区域公司");
-				company7.setValue("区域公司");
-				
-				List<SelectCompany> companys = new ArrayList<SelectCompany>();
-				
-				if("pz001".equals(user)){
-					companys.add(company1);
-					companys.add(company2);
-					companys.add(company3);
-					companys.add(company4);
-					companys.add(company5);
-					companys.add(company6);
-					companys.add(company7);
-				}else if("admin000".equals(user)){
-					companys.add(company2);
-				}else if("admin001".equals(user)){
-					companys.add(company3);
-				}else if("admin002".equals(user)){
-					companys.add(company4);
-				}else if("admin003".equals(user)){
-					companys.add(company5);
-				}else if("admin004".equals(user)){
-					companys.add(company6);
-				}else if("admin005".equals(user)){
-					companys.add(company7);
-				}
-				
-				return companys;
+			//临时应急，先写死
+			SelectCompany company1 = new SelectCompany();
+			company1.setName("全部公司");
+			company1.setValue("1");
+			SelectCompany company2 = new SelectCompany();
+			company2.setName("江苏事业部");
+			company2.setValue("江苏事业部");
+			SelectCompany company3 = new SelectCompany();
+			company3.setName("一公司");
+			company3.setValue("一公司");
+			SelectCompany company4 = new SelectCompany();
+			company4.setName("二公司");
+			company4.setValue("二公司");
+			SelectCompany company5 = new SelectCompany();
+			company5.setName("三公司");
+			company5.setValue("三公司");
+			SelectCompany company6 = new SelectCompany();
+			company6.setName("四公司");
+			company6.setValue("四公司");
+			SelectCompany company7 = new SelectCompany();
+			company7.setName("区域公司");
+			company7.setValue("区域公司");
+			
+			List<SelectCompany> companys = new ArrayList<SelectCompany>();
+			
+			if("pz001".equals(user)){
+				companys.add(company1);
+				companys.add(company2);
+				companys.add(company3);
+				companys.add(company4);
+				companys.add(company5);
+				companys.add(company6);
+				companys.add(company7);
+			}else if("admin000".equals(user)){
+				companys.add(company2);
+			}else if("admin001".equals(user)){
+				companys.add(company3);
+			}else if("admin002".equals(user)){
+				companys.add(company4);
+			}else if("admin003".equals(user)){
+				companys.add(company5);
+			}else if("admin004".equals(user)){
+				companys.add(company6);
+			}else if("admin005".equals(user)){
+				companys.add(company7);
+			}
+			
+			return companys;
 	}
 	
 	@RequestMapping(value="attendenceList",method=RequestMethod.GET)
-	public String attendenceList( ModelMap model, @RequestParam("user")  String user){
+	public String attendenceList( HttpServletRequest request,
+			ModelMap model,  String user){
 		
 		//页面菜单样式需要
-		model.put("pageIndex", 1);
+		model.put("pageIndex", 0);
 				
-		//pz001  admin000 admin001 admin002 admin003 admin004
-		//临时应急，先写死
-		SelectCompany company1 = new SelectCompany();
-		company1.setName("全部公司");
-		company1.setValue("1");
-		SelectCompany company2 = new SelectCompany();
-		company2.setName("江苏事业部");
-		company2.setValue("江苏事业部");
-		SelectCompany company3 = new SelectCompany();
-		company3.setName("一公司");
-		company3.setValue("一公司");
-		SelectCompany company4 = new SelectCompany();
-		company4.setName("二公司");
-		company4.setValue("二公司");
-		SelectCompany company5 = new SelectCompany();
-		company5.setName("三公司");
-		company5.setValue("三公司");
-		SelectCompany company6 = new SelectCompany();
-		company6.setName("四公司");
-		company6.setValue("四公司");
-		SelectCompany company7 = new SelectCompany();
-		company7.setName("区域公司");
-		company7.setValue("区域公司");
-		
-		List<SelectCompany> companys = new ArrayList<SelectCompany>();
-		
-		if("pz001".equals(user)){
-			companys.add(company1);
-			companys.add(company2);
-			companys.add(company3);
-			companys.add(company4);
-			companys.add(company5);
-			companys.add(company6);
-			companys.add(company7);
-		}else if("admin000".equals(user)){
-			companys.add(company2);
-		}else if("admin001".equals(user)){
-			companys.add(company3);
-		}else if("admin002".equals(user)){
-			companys.add(company4);
-		}else if("admin003".equals(user)){
-			companys.add(company5);
-		}else if("admin004".equals(user)){
-			companys.add(company6);
-		}else if("admin005".equals(user)){
-			companys.add(company7);
+		if(!StringUtils.isNullOrEmpty(user) ){
+			request.getSession().setAttribute("user", user);
 		}
 		
-		//页面菜单样式需要
-		model.put("pageIndex", 1);
-		model.put("companys", companys);
+		model.put("companys", this.getCompanyList(null == request.getSession().getAttribute("user")?"":request.getSession().getAttribute("user").toString()));
 		model.put("user", user);
 		return "attendenceList";
 	}
 	
 
 	@RequestMapping(value="attendenceDailyList",method=RequestMethod.GET)
-	public String attendenceDailyList( ModelMap model, @RequestParam("user")  String user){
-		
-		//页面菜单样式需要
-		model.put("pageIndex", 2);
-				
-		//pz001  admin000 admin001 admin002 admin003 admin004
-		//临时应急，先写死
-		SelectCompany company1 = new SelectCompany();
-		company1.setName("全部公司");
-		company1.setValue("1");
-		SelectCompany company2 = new SelectCompany();
-		company2.setName("江苏事业部");
-		company2.setValue("江苏事业部");
-		SelectCompany company3 = new SelectCompany();
-		company3.setName("一公司");
-		company3.setValue("一公司");
-		SelectCompany company4 = new SelectCompany();
-		company4.setName("二公司");
-		company4.setValue("二公司");
-		SelectCompany company5 = new SelectCompany();
-		company5.setName("三公司");
-		company5.setValue("三公司");
-		SelectCompany company6 = new SelectCompany();
-		company6.setName("四公司");
-		company6.setValue("四公司");
-		SelectCompany company7 = new SelectCompany();
-		company7.setName("区域公司");
-		company7.setValue("区域公司");
-		
-		List<SelectCompany> companys = new ArrayList<SelectCompany>();
-		
-		if("pz001".equals(user)){
-			companys.add(company1);
-			companys.add(company2);
-			companys.add(company3);
-			companys.add(company4);
-			companys.add(company5);
-			companys.add(company6);
-			companys.add(company7);
-		}else if("admin000".equals(user)){
-			companys.add(company2);
-		}else if("admin001".equals(user)){
-			companys.add(company3);
-		}else if("admin002".equals(user)){
-			companys.add(company4);
-		}else if("admin003".equals(user)){
-			companys.add(company5);
-		}else if("admin004".equals(user)){
-			companys.add(company6);
-		}else if("admin005".equals(user)){
-			companys.add(company7);
-		}
+	public String attendenceDailyList(HttpServletRequest request, ModelMap model, String user){
 		
 		//页面菜单样式需要
 		model.put("pageIndex", 1);
-		model.put("companys", companys);
+				
+		if(!StringUtils.isNullOrEmpty(user) ){
+			request.getSession().setAttribute("user", user);
+		}
+		
+		model.put("companys", this.getCompanyList(null == request.getSession().getAttribute("user")?"":request.getSession().getAttribute("user").toString()));
 		model.put("user", user);
-		return "attendenceList";
+		return "attendenceDailyList";
 	}
 	
 	@RequestMapping(value="attendenceReportList.json",method = { RequestMethod.GET,
 			RequestMethod.POST },produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String attendenceReportList(@RequestParam("month")  String month, @RequestParam("company")  String company, 
-			String mobile, String userName, String dataType, @RequestParam("limit") Integer limit, 
+	public String attendenceReportList(HttpServletRequest request, @RequestParam("month")  String month, @RequestParam("company")  String company, 
+			String department, String mobile, String userName, String dataType, @RequestParam("limit") Integer limit, 
 			@RequestParam("offset") Integer offset, ModelMap model){
+		
+		//如果用户未登陆
+		if(null == request.getSession().getAttribute("user") || StringUtils.isNullOrEmpty(request.getSession().getAttribute("user").toString())){
+			BootstrapTableData bData = new BootstrapTableData();
+			return JSON.toJSONString(bData);
+		}
 		
 		if("1".equals(company)){
 			company = "";
@@ -265,7 +185,7 @@ public class OpenAPIControl {
 		bData.setPageSize(limit);
 		
 		// dataType 0 全部记录，1 异常记录
-		List<AttendenceReportBo> arBos = attendenceReportDao.selectPagebyConditions(company, month, userName, mobile, bData,dataType);
+		List<AttendenceReportBo> arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, mobile, bData,dataType);
 		if(null != arBos && arBos.size() > 0){
 			List<Map<String,String>> map = new ArrayList<Map<String,String>>();
 			//重新组织数据,用于页面展示
@@ -286,17 +206,46 @@ public class OpenAPIControl {
 		return JSON.toJSONString(bData);
 	}
 	
-	//获取报表动态表头
+	@RequestMapping(value="attendenceDailyReportList.json",method = { RequestMethod.GET,
+			RequestMethod.POST },produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String attendenceDailyReportList(HttpServletRequest request, @RequestParam("startDate")  String startDateStr, 
+			@RequestParam("endDate")  String endDateStr, @RequestParam("company")  String company, String department,
+			String mobile, String userName, String dataType, @RequestParam("limit") Integer limit, 
+			@RequestParam("offset") Integer offset, ModelMap model){
+		
+		SimpleDateFormat sfDay = new  SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sfDate = new  SimpleDateFormat("yyyy-MM");
+		Date startDate;
+		try {
+			startDate = sfDay.parse(startDateStr);
+			//根据startDate获取月份
+			//每月日期未上月24号到当月23号
+			Calendar startCalendar = Calendar.getInstance();//日历对象 
+			startCalendar.setTime(startDate);//设置日期 
+			if(startDate.getDate() >= 24){
+				startCalendar.add(Calendar.MONTH, 1);//月份加
+			}
+			String month = sfDate.format(startCalendar.getTime());
+			return this.attendenceReportList(request, month, company, department, mobile, userName, dataType, limit, offset, model);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	//获取报表动态表头,整月的时间段
 	@RequestMapping(value="attendenceReportColumnName.json",method = { RequestMethod.GET,
 			RequestMethod.POST },produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String attendenceReportColumnName(@RequestParam("month")  String month, String company, 
+	public String attendenceReportColumnName(@RequestParam("month")  String month, String company, String department, 
 			String mobile, String userName, ModelMap model){
 		
 		BootstrapTableData bData = new BootstrapTableData();
 		bData.setPage(1);
 		bData.setPageSize(1);
-		List<AttendenceReportBo> arBos = attendenceReportDao.selectPagebyConditions(company, month, userName, mobile, bData,"0");
+		List<AttendenceReportBo> arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, mobile, bData,"0");
 		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
 		if(null != arBos && arBos.size() > 0){
 			Map<String, String> map = arBos.get(0).getAttendenceDetail();
@@ -314,11 +263,83 @@ public class OpenAPIControl {
 			column.put("column", "remark");
 			columns.add(column);
 		}
+		
+		return JSON.toJSONString(columns);
+	}
+	
+	//获取报表动态表头,根据时间段，获取表头（目前是从月度报表搜素，所以只能搜索正月之内的时间）
+	@RequestMapping(value="attendenceDailyReportColumnName.json",method = { RequestMethod.GET,
+			RequestMethod.POST },produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String attendenceDailyReportColumnName(@RequestParam("startDate")  String startDateStr,
+			@RequestParam("endDate")  String endDateStr, String company,  String department,
+			String mobile, String userName, ModelMap model){
+		
+		
+		
+		//通过起始时间获取月度
+		SimpleDateFormat sf = new  SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sf1 = new  SimpleDateFormat("yyyy-MM");
+		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
+		
+		try {
+			Date startDate = sf.parse(startDateStr);
+			Date endDate = sf.parse(endDateStr);
+			//根据startDate获取月份
+			//每月日期未上月24号到当月23号
+			Calendar startCalendar = Calendar.getInstance();//日历对象 
+			startCalendar.setTime(startDate);//设置日期  
+			if(startDate.getDate() >= 24){
+				startCalendar.add(Calendar.MONTH, 1);//月份加
+			} 
+			
+			//获取指定月份，和 上个月份的 string
+			String month = sf1.format(startCalendar.getTime());
+			startCalendar.add(Calendar.MONTH, -1);
+			String lastMonth = sf1.format(startCalendar.getTime());
+			
+			//获取整月的表头，再剔除所选时间范围外的
+			BootstrapTableData bData = new BootstrapTableData();
+			bData.setPage(1);
+			bData.setPageSize(1);
+			List<AttendenceReportBo> arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, mobile, bData,"0");
+			
+			if(null != arBos && arBos.size() > 0){
+				Map<String, String> map = arBos.get(0).getAttendenceDetail();
+				for(String key : map.keySet()){
+					//从月度columns中，剔除所选时间范围之外的
+					//只判断日期字段, 并且在所选时间范围外，不加入表单头
+					//month 与 startDate 可能不一样，都要判断
+					if((key.contains(month) || key.contains(lastMonth)) && 
+							(sf.parse(key).before(startDate) || sf.parse(key).after(endDate))){
+							continue;
+					}
+					
+					Map<String, String> column = new LinkedHashMap<String, String>();
+					column.put("column", key);
+					columns.add(column);
+				}
+				//加上打卡手机数量
+//				Map<String, String> column1 = new LinkedHashMap<String, String>();
+//				column1.put("column", "deviceTotal");
+//				columns.add(column1);
+				//最后加上备注
+				Map<String, String> column = new LinkedHashMap<String, String>();
+				column.put("column", "remark");
+				columns.add(column);
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		return JSON.toJSONString(columns);
 	}
 	
 
-	//获取报表动态表头
+	//修改备注
 	@RequestMapping(value="modifyRemark.json",method = { RequestMethod.GET,
 			RequestMethod.POST },produces = "application/json; charset=utf-8")
 	@ResponseBody

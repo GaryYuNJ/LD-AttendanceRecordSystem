@@ -51,24 +51,31 @@
 											  <c:forEach items="${companys}" var="item">
 											         <option value="${item.value}">${item.name}</option>
 											   </c:forEach>  
-											   <!-- 
-												<option value="">全部公司</option>
-												<option value="绿地集团_江苏事业部">绿地集团_江苏事业部</option>
-												<option value="绿地集团_南京一公司">绿地集团_南京一公司</option>
-												<option value="绿地集团_南京二公司">绿地集团_南京二公司</option>
-												<option value="绿地集团_南京三公司">绿地集团_南京三公司</option>
-												<option value="绿地集团_南京四公司">绿地集团_南京四公司</option>
-												 -->
+											</select>
+										</div>
+										
+										<label class="col-lg-2 control-label" style="width: 80px">部门</label>
+										<div class="col-lg-3">
+											<select class="form-control" id="departmentSearch" name="departmentSearch">
+												<option value="">所有部门</option>
+											    <option value="总经理室">总经理室</option>
+												<option value="财务部">财务部</option>
+												<option value="营销部">营销部</option>
+												<option value="技术部">技术部</option>
+												<option value="工程部">工程部</option>
+												<option value="合约部">合约部</option>
+												<option value="投资开发部">投资开发部</option>
+												<option value="商业管理部">商业管理部</option>
+												<option value="绿地会">绿地会</option>
+												<option value="人力资源部">人力资源部</option>
+												<option value="办公室">办公室</option>
+												<option value="运营管理部">运营管理部</option>
+												<option value="开发部">开发部</option>
+												<option value="客服部">客服部</option>
 											</select>
 										</div>
 										
 										<label class="col-lg-2 control-label" style="width: 80px">月度</label>
-						                <!-- <div class='col-lg-3 input-group date datetimepicker'   >
-						                    <input type='text' class="form-control"  id="monthSearch" name="monthSearch"  placeholder="月度"/>
-						                    <span class="input-group-addon">
-						                        <span class="glyphicon glyphicon-calendar"></span>
-						                    </span>
-						                </div> -->
 						                <div class="col-lg-3">
 											<select class="form-control" id="monthSearch" name="monthSearch">
 												<option value="2017-10">2017-10</option>
@@ -87,11 +94,16 @@
 												<option value="2016-09">2016-09</option>
 												<option value="2016-08">2016-08</option>
 												<option value="2016-07">2016-07</option>
-												<option value="2016-06">2016-06</option>
-												<option value="2016-05">2016-05</option>
 											</select>
-										</div>
-						                
+										</div> 
+										<!-- 
+										<label for="monthSearch" class="col-md-2 control-label">月度</label>
+						                <div class="input-group date col-md-3 form_month" data-date-format="MM yyyy" data-link-format="yyyy-mm" data-link-field="monthSearch">
+						                    <input class="form-control" size="16" type="text" value="" readonly>
+						                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+						                </div>
+										<input type="hidden" id="monthSearch" name="monthSearch" value="" />
+						                 -->
 				                	   <!-- 
 										<label class="col-lg-2 control-label" style="width: 80px">月度</label>
 										<div class="col-lg-2">

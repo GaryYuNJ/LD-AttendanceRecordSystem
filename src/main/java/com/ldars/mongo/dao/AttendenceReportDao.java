@@ -62,7 +62,7 @@ public class AttendenceReportDao {
 		 * @author Gary
 		 * @date 2017年10月18日 下午8:27:47
 		 */
-		public List<AttendenceReportBo> selectPagebyConditions(String company, String month, String realName, String mobile, 
+		public List<AttendenceReportBo> selectPagebyConditions(String company, String department, String month, String realName, String mobile, 
 				BootstrapTableData pager, String dataType){
 			Query query = new Query();
 			query.skip((pager.getPage()-1)*pager.getPageSize());
@@ -80,6 +80,9 @@ public class AttendenceReportDao {
 			if(!StringUtils.isNullOrEmpty(company)){
 				//criteria.andOperator(Criteria.where("company").is(company));
 				criteria = criteria.and("company").is(company);
+			}
+			if(!StringUtils.isNullOrEmpty(department)){
+				criteria = criteria.and("department").is(department);
 			}
 			
 			if(!StringUtils.isNullOrEmpty(realName)){

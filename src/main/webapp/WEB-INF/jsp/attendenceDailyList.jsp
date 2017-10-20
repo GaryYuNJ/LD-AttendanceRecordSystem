@@ -46,80 +46,80 @@
 								
 									<div class="form-group">  
 										<label class="col-lg-2 control-label" style="width: 80px">公司</label>
-										<div class="col-lg-3">
+										<div class="col-lg-2">
 											<select class="form-control" id="companySearch" name="companySearch">
 											  <c:forEach items="${companys}" var="item">
 											         <option value="${item.value}">${item.name}</option>
 											   </c:forEach>  
-											   <!-- 
-												<option value="">全部公司</option>
-												<option value="绿地集团_江苏事业部">绿地集团_江苏事业部</option>
-												<option value="绿地集团_南京一公司">绿地集团_南京一公司</option>
-												<option value="绿地集团_南京二公司">绿地集团_南京二公司</option>
-												<option value="绿地集团_南京三公司">绿地集团_南京三公司</option>
-												<option value="绿地集团_南京四公司">绿地集团_南京四公司</option>
-												 -->
 											</select>
 										</div>
 										
-										<label class="col-lg-2 control-label" style="width: 80px">月度</label>
-						                <!-- <div class='col-lg-3 input-group date datetimepicker'   >
-						                    <input type='text' class="form-control"  id="monthSearch" name="monthSearch"  placeholder="月度"/>
-						                    <span class="input-group-addon">
-						                        <span class="glyphicon glyphicon-calendar"></span>
-						                    </span>
-						                </div> -->
-						                <div class="col-lg-3">
-											<select class="form-control" id="monthSearch" name="monthSearch">
-												<option value="2017-10">2017-10</option>
-												<option value="2017-09">2017-09</option>
-												<option value="2017-08">2017-08</option>
-												<option value="2017-07">2017-07</option>
-												<option value="2017-06">2017-06</option>
-												<option value="2017-05">2017-05</option>
-												<option value="2017-04">2017-04</option>
-												<option value="2017-03">2017-03</option>
-												<option value="2017-02">2017-02</option>
-												<option value="2017-01">2017-01</option>
-												<option value="2016-12">2016-12</option>
-												<option value="2016-11">2016-11</option>
-												<option value="2016-10">2016-10</option>
-												<option value="2016-09">2016-09</option>
-												<option value="2016-08">2016-08</option>
-												<option value="2016-07">2016-07</option>
-												<option value="2016-06">2016-06</option>
-												<option value="2016-05">2016-05</option>
+										<label class="col-lg-2 control-label" style="width: 80px">部门</label>
+										<div class="col-lg-2">
+											<select class="form-control" id="departmentSearch" name="departmentSearch">
+												<option value="">所有部门</option>
+											    <option value="总经理室">总经理室</option>
+												<option value="财务部">财务部</option>
+												<option value="营销部">营销部</option>
+												<option value="技术部">技术部</option>
+												<option value="工程部">工程部</option>
+												<option value="合约部">合约部</option>
+												<option value="投资开发部">投资开发部</option>
+												<option value="商业管理部">商业管理部</option>
+												<option value="绿地会">绿地会</option>
+												<option value="人力资源部">人力资源部</option>
+												<option value="办公室">办公室</option>
+												<option value="运营管理部">运营管理部</option>
+												<option value="开发部">开发部</option>
+												<option value="客服部">客服部</option>
 											</select>
 										</div>
-						                
+										
+										<label for="dtp_input1" class="col-md-2 control-label">起始日</label>
+						                <div class="input-group date col-md-2 form_date" data-date-format="dd MM yyyy" data-link-format="yyyy-mm-dd" data-link-field="startDateSearch">
+						                    <input class="form-control" size="16" type="text" value="" readonly>
+						                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+											<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span> -->
+						                </div>
+										<input type="hidden" id="startDateSearch" value="" />
+										
+										<label for="dtp_input1" class="col-md-2 control-label">结束日</label>
+						                <div class="input-group date col-md-2 form_date" data-date-format="dd MM yyyy" data-link-format="yyyy-mm-dd" data-link-field="endDateSearch">
+						                    <input class="form-control" size="16" type="text" value="" readonly>
+						                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+											<!-- <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span> -->
+						                </div>
+										<input type="hidden" id="endDateSearch" value="" />
 				                	   <!-- 
 										<label class="col-lg-2 control-label" style="width: 80px">月度</label>
 										<div class="col-lg-2">
 											<input type="text" id="monthSearch" class="form-control" placeholder="月度">
 										</div>
 										 -->
-										
 			                		</div>
 									<div class="form-group">
+										
 										<label class="col-lg-2 control-label" style="width: 80px">用户名称</label>
-										<div class="col-lg-3">
+										<div class="col-lg-2">
 											<input type="text" id="userNameSearch" class="form-control" placeholder="用户名称">
 										</div>
 										<label class="col-lg-2 control-label" style="width: 80px">手机号</label>
-										<div class="col-lg-3">
+										<div class="col-lg-2">
 											<input type="text" id="userMobileSearch" class="form-control" placeholder="手机号">
 										</div>
-										
+										<label class="col-lg-2 control-label" style="width: 80px"></label>
 										<div class="col-lg-2" style='padding-right:15px;'>
 											<button type="button" onclick = "totalRefreshTable(0);" class="btn btn-primary">
 												<i class="icon-search"></i> 查询全部记录
 											</button>
 										</div>
+										<!-- 
 										<div class="col-lg-1" style='padding-right:15px;'>
 											<button type="button" onclick = "totalRefreshTable(1);" class="btn btn-warning">
 												<i class="icon-search"></i> 查询异常记录
 											</button>
 										</div>
+										 -->
 									</div>
 								</form>
 							</div>

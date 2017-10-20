@@ -76,7 +76,7 @@
 					    dataType: "json",
 					    queryParams: userQueryParams,
 					    pageSize: 15,
-					    pageList: [15, 30,1000,5000],  //可供选择的每页的行数（*）
+					    pageList: [50, 1000,10000],  //可供选择的每页的行数（*）
 					    pageNumber: 1, // 默认页面
 					    pagination: true, //分页
 					    singleSelect: false,
@@ -162,8 +162,9 @@
 	      userName: $("#userNameSearch").val(),
 	      mobile: $("#userMobileSearch").val(),
 	      company: $("#companySearch").val(),
+	      department: $("#departmentSearch").val(),
 	      month: $("#monthSearch").val(),
-	      dataType: $("#dataTypeSearch").val(),  //0 全部记录，1 异常记录
+	      dataType: $("#dataTypeSearch").val()  //0 全部记录，1 异常记录
 	    };
 	    return temp;
 	  }
@@ -242,22 +243,15 @@
        
 	 });  
     
-    
-//	//时间选择器
-//	$('.datetimepicker').datetimepicker({
-//		format: "yyyy-mm-dd",
-//		language: 'zh-CN',
-//		autoclose:true,
-//		todayHighlight:true
-//	});
-//	
-    //选择年月的    startView: 3,   minView: 3, format: 'yyyymm',  
-//    $('.datetimepicker').datetimepicker({  
-//        format: 'yyyy-mm',  
-//        weekStart: 1,  
-//        autoclose: true,  
-//        startView: 3,  
-//        minView: 3,  
-//        forceParse: false,  
-//        language: 'zh-CN'  
-//     });  
+
+		$('.form_month').datetimepicker({
+			format: "yyyy-mm",
+			language: 'zh-CN',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+	    });

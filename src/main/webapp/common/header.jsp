@@ -13,8 +13,6 @@
 <link href="<c:url value="/style/bootstrap.css" />" rel="stylesheet">
 <!-- Font awesome icon -->
 <link rel="stylesheet" href="<c:url value="/style/font-awesome.css" />">
-<!-- Date picker -->
-<link rel="stylesheet" href="<c:url value="/style/bootstrap-datetimepicker.min.css" />">
 <!-- Bootstrap toggle -->
 <link href="<c:url value="/style/style.css" />" rel="stylesheet">
 <link href="<c:url value="/js/themes/default/style.min.css" />" rel="stylesheet">
@@ -23,6 +21,10 @@
 <link href="<c:url value="/style/bootstrapValidator.min.css" />" rel="stylesheet">
 <link href="<c:url value="/style/fileinput.min.css" />" rel="stylesheet">
 <link href="<c:url value="/style/bootstrap-select.min.css" />" rel="stylesheet">
+
+<link href="<c:url value="/style/bootstrap.min.css" />" rel="stylesheet" media="screen">
+<link href="<c:url value="/style/bootstrap-datetimepicker.min.css" />" rel="stylesheet" media="screen">
+
 <!-- 
 <link href="<c:url value="/style/rawgit-bootstrap-editable.css" />" rel="stylesheet"> -->
 <!-- HTML5 Support for IE -->

@@ -14,15 +14,17 @@
 		columns = [];
 		$("#dataTypeSearch").val(type);
 		
-		var month = $("#monthSearch").val();
-		if(month == "" || null == month){
-			alert("必须选择月份");
+		var startDate = $("#startDateSearch").val();
+		var endDate = $("#endDateSearch").val();
+		if(startDate == "" || null == startDate
+				|| endDate == "" || null == endDate){
+			alert("请选择选择起始日期");
 			return;
 		}
 		
 		  $.ajax({
-			    url:rootUri + "/openApi/attendenceReportColumnName.json",
-			    data:{month : month },  
+			    url:rootUri + "/openApi/attendenceDailyReportColumnName.json",
+			    data:{startDate : startDate, endDate : endDate },  
 			    type:'get',  
 			    cache:false,  
 			    dataType:'json',  
@@ -72,11 +74,11 @@
 					//用户列表table
 					$('#userListTableId').bootstrapTable('destroy').bootstrapTable({
 						method: 'get',
-					    url: rootUri + "/openApi/attendenceReportList.json", 
+					    url: rootUri + "/openApi/attendenceDailyReportList.json", 
 					    dataType: "json",
 					    queryParams: userQueryParams,
 					    pageSize: 15,
-					    pageList: [15, 30,1000,5000],  //可供选择的每页的行数（*）
+					    pageList: [50,1000,10000],  //可供选择的每页的行数（*）
 					    pageNumber: 1, // 默认页面
 					    pagination: true, //分页
 					    singleSelect: false,
@@ -95,9 +97,9 @@
 			            exportOptions:{
 			                //ignoreColumn: [0,1],  //忽略某一列的索引  
 			            	ignoreColumn: [columns.length-1],  //忽略某一列的索引
-			                fileName: '月度考勤报表',  //文件名称设置  
+			                fileName: '日考勤报表',  //文件名称设置  
 			                worksheetName: 'sheet1',  //表格工作区名称  
-			                tableName: '月度考勤报表',  
+			                tableName: '日考勤报表',  
 			                //excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],  
 			                onMsoNumberFormat: DoOnMsoNumberFormat  
 			            },
@@ -162,8 +164,10 @@
 	      userName: $("#userNameSearch").val(),
 	      mobile: $("#userMobileSearch").val(),
 	      company: $("#companySearch").val(),
-	      month: $("#monthSearch").val(),
-	      dataType: $("#dataTypeSearch").val(),  //0 全部记录，1 异常记录
+	      department: $("#departmentSearch").val(),
+	      startDate: $("#startDateSearch").val(),
+	      endDate: $("#endDateSearch").val(),
+	      dataType: $("#dataTypeSearch").val()  //0 全部记录，1 异常记录
 	    };
 	    return temp;
 	  }
@@ -261,3 +265,16 @@
 //        forceParse: false,  
 //        language: 'zh-CN'  
 //     });  
+	 
+		$('.form_date').datetimepicker({
+			format: "yyyy-mm-dd",
+			language: 'zh-CN',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+	    });
+		
