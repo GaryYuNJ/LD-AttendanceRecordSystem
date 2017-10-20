@@ -23,9 +23,10 @@
 <link href="<c:url value="/style/bootstrapValidator.min.css" />" rel="stylesheet">
 <link href="<c:url value="/style/fileinput.min.css" />" rel="stylesheet">
 <link href="<c:url value="/style/bootstrap-select.min.css" />" rel="stylesheet">
-
+<!-- 
+<link href="<c:url value="/style/rawgit-bootstrap-editable.css" />" rel="stylesheet"> -->
 <!-- HTML5 Support for IE -->
-<!--[if lt IE 9]>
+<!--[if lt IE 9]>	
   <script src="js/html5shim.js"></script>
   <![endif]-->
 <!-- Favicon -->
@@ -48,15 +49,18 @@ var rootUri="${rootUri}";
 					<h1>考勤报表系统</h1>
 				</div>
 				<ul class="nav navbar-nav pull-right">
-					<li class="dropdown pull-right"><a data-toggle="dropdown"
+					<li class="dropdown pull-right">
+						<a data-toggle="dropdown"
 						class="dropdown-toggle" href="#"> <i class="icon-user"></i>
-							管理员 <b class="caret"></b>
-					</a> <!-- Dropdown menu -->
+							${user} <b class="caret"></b>
+						</a> 
+						<!-- Dropdown menu 
 						<ul class="dropdown-menu">
-							<!-- <li><a href="#"><i class="icon-user"></i> 资料</a></li> -->
 							<li ><a data-toggle="modal" href="#changePasswordModal"><i class="icon-cogs"></i> 密码修改</a></li>
 							<li><a href="<c:url value="/logOut" />"><i class="icon-off"></i> 退出</a></li>
-						</ul></li>
+						</ul>
+						-->
+					</li>
 				</ul>
 			</div>
 	</header>

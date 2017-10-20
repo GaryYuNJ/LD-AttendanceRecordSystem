@@ -3,6 +3,7 @@ package com.ldars.mongo.bo;
 import java.io.Serializable;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.annotation.Id;
@@ -37,6 +38,9 @@ public class AttendenceReportBo implements Serializable {
 	private String realName;  
 	private String company;  
 	private String department;  
+	private String project;  
+	private String amWorkTime;  //"8:30 
+	private String pmWorkTime;  //17:30"
 	private String workTime;  //"8:30 ~ 17:30"
 	private Long updateTime;  
 	private Map<String,String> attendenceDetail;  
@@ -44,20 +48,15 @@ public class AttendenceReportBo implements Serializable {
 	private int realWorkDays;
 	private int invalidWorkDays;
 	private String remark;  
+	private int deviceTotal;
+	private List<String> deviceList;
+	private int sequence;
 	
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	
-	
-	public Long getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(Long updateTime) {
-		this.updateTime = updateTime;
 	}
 	public String getMonth() {
 		return month;
@@ -71,7 +70,6 @@ public class AttendenceReportBo implements Serializable {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	
 	public String getRealName() {
 		return realName;
 	}
@@ -90,11 +88,35 @@ public class AttendenceReportBo implements Serializable {
 	public void setDepartment(String department) {
 		this.department = department;
 	}
+	public String getProject() {
+		return project;
+	}
+	public void setProject(String project) {
+		this.project = project;
+	}
+	public String getAmWorkTime() {
+		return amWorkTime;
+	}
+	public void setAmWorkTime(String amWorkTime) {
+		this.amWorkTime = amWorkTime;
+	}
+	public String getPmWorkTime() {
+		return pmWorkTime;
+	}
+	public void setPmWorkTime(String pmWorkTime) {
+		this.pmWorkTime = pmWorkTime;
+	}
 	public String getWorkTime() {
 		return workTime;
 	}
 	public void setWorkTime(String workTime) {
 		this.workTime = workTime;
+	}
+	public Long getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Long updateTime) {
+		this.updateTime = updateTime;
 	}
 	public Map<String, String> getAttendenceDetail() {
 		return attendenceDetail;
@@ -126,6 +148,25 @@ public class AttendenceReportBo implements Serializable {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	public int getDeviceTotal() {
+		return deviceTotal;
+	}
+	public void setDeviceTotal(int deviceTotal) {
+		this.deviceTotal = deviceTotal;
+	}
+	public List<String> getDeviceList() {
+		return deviceList;
+	}
+	public void setDeviceList(List<String> deviceList) {
+		this.deviceList = deviceList;
+	}
+	public int getSequence() {
+		return sequence;
+	}
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}
+	
 	
 	
 }

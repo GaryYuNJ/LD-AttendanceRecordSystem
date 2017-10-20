@@ -33,7 +33,7 @@
 <script src="<c:url value="/js/bootstrap-switch.min.js" />"></script>
 <script src="<c:url value="/js/custom.js" />"></script>
 <script src="<c:url value="/js/bootstrapValidator.min.js" />"></script>
-<script src="<c:url value="/js/bootstrap-datetimepicker.min.js" />"></script>
+<script src="<c:url value="/js/bootstrap-datetimepicker.js" />"></script>
 <script src="<c:url value="/js/bootstrap-datetimepicker.zh-CN.js" />"></script>
 <script src="<c:url value="/js/bootstrap-select.min.js" />"></script>
 <script src="<c:url value="/js/defaults-zh_CN.min.js" />"></script>
@@ -41,6 +41,12 @@
 <script src="<c:url value="/js/fileinput.min.js" />"></script>
 <script src="<c:url value="/js/fileinput_locale_zh.js" />"></script>
 
+<script src="<c:url value="/js/bootstrap-table-export.js" />"></script>
+<script src="<c:url value="/js/tableExport.min.js" />"></script>
+<!-- 
+<script src="<c:url value="/js/rawgit-bootstrap-editable.js" />"></script>
+<script src="<c:url value="/js/bootstrap-table-editable.min.js" />"></script>
+ -->
 <script type="text/javascript">
 $("#nav li:eq(${pageIndex}) a").addClass("open");
 </script>

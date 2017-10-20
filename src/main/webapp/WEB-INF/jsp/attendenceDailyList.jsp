@@ -14,13 +14,13 @@
 	<!-- Page heading -->
 	<div class="page-head">
 		<h2 class="pull-left">
-			<i class="icon-home"></i> 考勤月报表页面
+			<i class="icon-home"></i> 考勤日报表页面
 		</h2>
 		<!-- Breadcrumb -->
 		<div class="bread-crumb pull-right">
-			<a href="index.html"><i class="icon-home"></i> 考勤月报表页面</a>
+			<a href="index.html"><i class="icon-home"></i> 考勤日报表页面</a>
 			<!-- Divider -->
-			<span class="divider">/</span> <a href="#" class="bread-current">考勤月报表</a>
+			<span class="divider">/</span> <a href="#" class="bread-current">考勤日报表</a>
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -275,4 +275,4 @@
 
 <%@ include file="/common/script.jsp"%>
 <%@ include file="/common/footer.html"%>
-<script src="<c:url value="/js/attendance_page.js" />"></script>
+<script src="<c:url value="/js/attendance_daily_page.js" />"></script>

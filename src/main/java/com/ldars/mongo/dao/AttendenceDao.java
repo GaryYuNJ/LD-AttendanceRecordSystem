@@ -110,8 +110,12 @@ public class AttendenceDao {
 		}
 		
 		public List<AttendenceBo> findByStartEndDate(Long startTime, Long endTime){
-			return mongoTemplate.find(new Query(Criteria.where("attendence_time").gte(startTime).lte(endTime)),
-					AttendenceBo.class);
+			
+			Query query = new Query(Criteria.where("attendence_time").gte(startTime).lte(endTime));
+			Order order = new Order(Direction.ASC, "attendence_time");
+			query.with(new Sort(order));
+			
+			return mongoTemplate.find(query, AttendenceBo.class);
 		}
 		
 		public  List<AttendenceBo> findByStartEndDateAndMobile(Long startTime,Long endTime, String mobile){
@@ -131,11 +135,13 @@ public class AttendenceDao {
 		}
 		
 		public AttendenceBo findByAttendanceDateMobileAndTag(String attDate, String mobile, String tag, int sort){
-			Criteria criatira = new Criteria();
-			criatira.andOperator(Criteria.where("mobile").is(mobile), 
-					Criteria.where("attendence_date").is(attDate), 
-					Criteria.where("tag").is(tag));
 			
+			
+			//Criteria criatira = new Criteria();
+//			criatira.andOperator(Criteria.where("mobile").is(mobile), 
+//					Criteria.where("attendence_date").is(attDate), 
+//					Criteria.where("tag").is(tag));
+			Criteria criatira = Criteria.where("mobile").is(mobile).and("attendence_date").is(attDate).and("tag").is(tag);
 			Query query = new Query();
 			
 			Order order;

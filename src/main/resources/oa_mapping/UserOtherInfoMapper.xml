@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ldars.oa.dao.UserOtherInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ldars.oa.model.UserOtherInfo" >
+    <result column="u_id" property="uId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="am_time" property="amTime" jdbcType="VARCHAR" />
+    <result column="pm_time" property="pmTime" jdbcType="VARCHAR" />
+    <result column="sequence" property="sequence" jdbcType="INTEGER" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="project" property="project" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT u_id, name, mobile, am_time, pm_time, sequence, company, department, project 
+    	FROM admin_user_otherinfo
+		where mobile = #{mobile,jdbcType=VARCHAR} order by sequence limit 1
+  </select>
+  
+  <insert id="insert" parameterType="com.ldars.oa.model.UserOtherInfo" >
+    insert into admin_user_otherinfo (u_id, name, mobile, 
+      am_time, pm_time, sequence, 
+      company, department, project
+      )
+    values (#{uId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{amTime,jdbcType=VARCHAR}, #{pmTime,jdbcType=VARCHAR}, #{sequence,jdbcType=INTEGER}, 
+      #{company,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{project,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ldars.oa.model.UserOtherInfo" >
+    insert into admin_user_otherinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uId != null" >
+        u_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="amTime != null" >
+        am_time,
+      </if>
+      <if test="pmTime != null" >
+        pm_time,
+      </if>
+      <if test="sequence != null" >
+        sequence,
+      </if>
+      <if test="company != null" >
+        company,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="project != null" >
+        project,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uId != null" >
+        #{uId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="amTime != null" >
+        #{amTime,jdbcType=VARCHAR},
+      </if>
+      <if test="pmTime != null" >
+        #{pmTime,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null" >
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="project != null" >
+        #{project,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

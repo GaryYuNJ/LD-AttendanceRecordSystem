@@ -19,6 +19,9 @@
 					<li class="has_sub">
 						<a href="<c:url value="/openApi/attendenceList" />"><i class="icon-list-alt"></i> 考勤月报表 </a>
 					</li>
+					<li class="has_sub">
+						<a href="<c:url value="/openApi/attendenceDailyList" />"><i class="icon-list-alt"></i> 考勤日报表 </a>
+					</li>
 					
 			</div>
 			<!-- Sidebar ends -->

@@ -59,7 +59,7 @@
 		from admin_user u 
 		left join admin_organization o on o.id=u.organization_id 
 		left join admin_organization o1 on o1.id=o.parent
-		left join admin_org_worktime ow on o1.id = ow.org_id and ow.STATUS='Y'
+		left join admin_org_worktime ow on o.id = ow.org_id and ow.STATUS='Y'
 		where o1.name is not null and
 		u.telephone = #{mobile,jdbcType=VARCHAR}
   </select>

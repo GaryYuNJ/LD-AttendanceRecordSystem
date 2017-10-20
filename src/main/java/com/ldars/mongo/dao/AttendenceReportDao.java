@@ -1,5 +1,6 @@
 package com.ldars.mongo.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -61,24 +62,38 @@ public class AttendenceReportDao {
 		 * @author Gary
 		 * @date 2017年10月18日 下午8:27:47
 		 */
-		public List<AttendenceReportBo> selectPagebyConditions(String company, String month, String realName, String mobile, BootstrapTableData pager){
+		public List<AttendenceReportBo> selectPagebyConditions(String company, String month, String realName, String mobile, 
+				BootstrapTableData pager, String dataType){
 			Query query = new Query();
 			query.skip((pager.getPage()-1)*pager.getPageSize());
 			query.limit(pager.getPageSize());
-			Order order = new Order(Direction.ASC, "company");
-
+			Order order = new Order(Direction.ASC, "sequence");
+			
 			Criteria criteria = new Criteria();
+			criteria = criteria.where("month").is(month);
+			
+			//List<Criteria> criterias = new ArrayList<Criteria>();
+//			if(!StringUtils.isNullOrEmpty(month)){
+//				//criteria.andOperator(Criteria.where("month").is(month));
+//				criteria = criteria.where("month").is("month");
+//			}
 			if(!StringUtils.isNullOrEmpty(company)){
-				criteria.andOperator(Criteria.where("company").is(company));
+				//criteria.andOperator(Criteria.where("company").is(company));
+				criteria = criteria.and("company").is(company);
 			}
-			if(!StringUtils.isNullOrEmpty(month)){
-				criteria.andOperator(Criteria.where("month").is(month));
-			}
+			
 			if(!StringUtils.isNullOrEmpty(realName)){
-				criteria.andOperator(Criteria.where("realName").is(realName));
+				//criteria.andOperator(Criteria.where("realName").is(realName));
+				criteria = criteria.and("realName").is(realName);
 			}
 			if(!StringUtils.isNullOrEmpty(mobile)){
-				criteria.andOperator(Criteria.where("mobile").is(mobile));
+				//criteria.andOperator(Criteria.where("mobile").is(mobile));
+				criteria = criteria.and("mobile").is(mobile);
+			}
+			// dataType 0 全部记录，1 异常记录
+			if(!StringUtils.isNullOrEmpty(dataType) && "1".equals(dataType)){
+				//criteria.andOperator(Criteria.where("mobile").is(mobile));
+				criteria = criteria.and("deviceTotal").gte(2);
 			}
 			
 			query.addCriteria(criteria);
