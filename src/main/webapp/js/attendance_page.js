@@ -251,7 +251,8 @@
 	        todayBtn:  1,
 			autoclose: 1,
 			todayHighlight: 1,
-			startView: 2,
-			minView: 2,
+			startView: 3, //同 startView: 'year',
+			minView: 3, //同 minView:'year',
+			maxView:'decade',
 			forceParse: 0
 	    });

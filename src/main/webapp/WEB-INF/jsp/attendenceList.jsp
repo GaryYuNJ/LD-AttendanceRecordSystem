@@ -74,7 +74,7 @@
 												<option value="客服部">客服部</option>
 											</select>
 										</div>
-										
+										<!-- 
 										<label class="col-lg-2 control-label" style="width: 80px">月度</label>
 						                <div class="col-lg-3">
 											<select class="form-control" id="monthSearch" name="monthSearch">
@@ -95,15 +95,15 @@
 												<option value="2016-08">2016-08</option>
 												<option value="2016-07">2016-07</option>
 											</select>
-										</div> 
-										<!-- 
+										</div>  -->
+										
 										<label for="monthSearch" class="col-md-2 control-label">月度</label>
 						                <div class="input-group date col-md-3 form_month" data-date-format="MM yyyy" data-link-format="yyyy-mm" data-link-field="monthSearch">
 						                    <input class="form-control" size="16" type="text" value="" readonly>
 						                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 						                </div>
 										<input type="hidden" id="monthSearch" name="monthSearch" value="" />
-						                 -->
+						                
 				                	   <!-- 
 										<label class="col-lg-2 control-label" style="width: 80px">月度</label>
 										<div class="col-lg-2">
