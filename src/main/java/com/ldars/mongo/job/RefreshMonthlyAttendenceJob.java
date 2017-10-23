@@ -21,7 +21,7 @@ public class RefreshMonthlyAttendenceJob {
 	@Autowired
 	private IMongoService mongoService;
 	
-	@Scheduled(cron = "0 0 17 * * ?")
+	@Scheduled(cron = "0 0 5 * * ?")
 	public void run() {
 		SimpleDateFormat sf1 = new  SimpleDateFormat("yyyy-MM");
 		//根据startDate获取月份
@@ -36,7 +36,7 @@ public class RefreshMonthlyAttendenceJob {
 		String month = sf1.format(startCalendar.getTime());
 		//List<AttendenceBo> list = attendenceDao.list();
 		try {
-			mongoService.refreshAttendenceReportByMonth(month);
+			mongoService.refreshAttendenceReportByMonth(month, "");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();

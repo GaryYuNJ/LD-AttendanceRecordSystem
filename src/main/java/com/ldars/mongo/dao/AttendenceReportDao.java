@@ -2,6 +2,7 @@ package com.ldars.mongo.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -18,6 +21,8 @@ import org.springframework.stereotype.Repository;
 import com.ldars.data.BootstrapTableData;
 import com.ldars.mongo.bo.AttendenceReportBo;
 import com.ldars.mongo.bo.Pager;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mysql.jdbc.StringUtils;
 
 @Repository
@@ -73,8 +78,8 @@ public class AttendenceReportDao {
 			
 			Order order = new Order(Direction.ASC, "sequence");
 			
-			Criteria criteria = new Criteria();
-			criteria = criteria.where("month").is(month);
+			//Criteria criteria = new Criteria();
+			Criteria criteria = Criteria.where("month").is(month);
 			
 			//List<Criteria> criterias = new ArrayList<Criteria>();
 //			if(!StringUtils.isNullOrEmpty(month)){
@@ -158,4 +163,68 @@ public class AttendenceReportDao {
 			List<AttendenceReportBo> attendenceReportBoList = mongoTemplate.find(query, AttendenceReportBo.class);
 			return attendenceReportBoList;
 		}
+		
+		
+		/**
+		 * 查询每月的统计数据，迟到、早退、未出勤总数
+		 * @param SepcificParamName 指定要统计的字段(每个月每个人为最小单位，统计搜索的和)
+		 * @param pager
+		 * @return
+		 * @author Gary
+		 * @date 2017年10月18日 下午8:27:47
+		 */
+		public Long calculateMonthSumbyConditions(String company, String department, String month, String realName, 
+				String mobile, String SepcificParamName){
+			Query query = new Query();
+			
+			Criteria criteria = new Criteria();
+			criteria.andOperator(Criteria.where("month").is(month));
+			//Criteria criteria = Criteria.where("month").is(month);
+			
+			
+			//criteria = criteria.and("company").is("江苏事业部"); //标定参数，如果只带month这一个条件，计算和时一直为0，多加一个条件就ok。。。。暂时找不出原因，先加这个额外条件
+			
+			if(!StringUtils.isNullOrEmpty(company)){
+				criteria = criteria.and("company").is(company);
+			}
+			if(!StringUtils.isNullOrEmpty(department)){
+				criteria = criteria.and("department").is(department);
+			}
+			
+			if(!StringUtils.isNullOrEmpty(realName)){
+				criteria = criteria.and("realName").is(realName);
+			}
+			if(!StringUtils.isNullOrEmpty(mobile)){
+				criteria = criteria.and("mobile").is(mobile);
+			}
+			
+			
+			
+			query.addCriteria(criteria);
+
+			List<AttendenceReportBo> arbos = mongoTemplate.find(query, AttendenceReportBo.class);
+			
+			Long total = 0L;  
+//	        String calculatStr = "function(doc, aggr){" +  
+//	                "            aggr.total += doc.unCheckAmount;" +  
+//	                "        }";  
+	        String calculatStr = "function(doc, aggr){" +  
+	                "            aggr.total += doc."+SepcificParamName+";" +  
+	                "        }";  
+	        
+	        DBObject result = mongoTemplate.getCollection("attendenceReport").group(new BasicDBObject(),   
+	                query.getQueryObject(),   
+	                new BasicDBObject("total", total),  
+	                calculatStr);  
+	          
+	        Map<String,BasicDBObject> map = result.toMap();  
+	        if(map.size() > 0){  
+	            BasicDBObject bdbo = map.get("0");  
+	            if(bdbo != null && bdbo.get("total") != null)  
+	            	total = bdbo.getLong("total");  
+	        }  
+	        return total;
+	        
+		}
+		
 }

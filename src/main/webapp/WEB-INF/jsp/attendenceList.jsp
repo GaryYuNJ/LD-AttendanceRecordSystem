@@ -134,6 +134,23 @@
 										</div>
 									</div>
 								</form>
+								<hr>
+								<form class="form-horizontal" role="form">
+									<div class="form-group">
+										<label class="col-lg-2 control-label" >未打卡数</label>
+										<div class="col-lg-2">
+											<input type="text" id="unCheckAmount" class="form-control" readonly placeholder="">
+										</div>
+										<label class="col-lg-2 control-label" >迟到数量</label>
+										<div class="col-lg-2">
+											<input type="text" id="lateAmount" class="form-control" readonly placeholder="">
+										</div>
+										<label class="col-lg-2 control-label" >早退数量</label>
+										<div class="col-lg-2">
+											<input type="text" id="earlyLeaveAmount" class="form-control" readonly placeholder="">
+										</div>
+									</div>
+								</form>
 							</div>
 							<div class="col-lg-12">
 								<table class="table table-striped table-bordered table-hover"

@@ -18,8 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.ldars.mongo.bo.AttendenceBo;
+import com.ldars.mongo.bo.AttendenceMonthlySummaryBo;
 import com.ldars.mongo.bo.AttendenceReportBo;
 import com.ldars.mongo.dao.AttendenceDao;
+import com.ldars.mongo.dao.AttendenceMonthlySummaryDao;
 import com.ldars.mongo.dao.AttendenceReportDao;
 import com.ldars.mongo.service.IMongoService;
 import com.ldars.oa.dao.OAUserMapper;
@@ -33,6 +35,9 @@ public class MongoServiceImpl implements IMongoService {
 	
 	@Autowired
 	private AttendenceDao attendenceDao;
+	
+	@Autowired
+	private AttendenceMonthlySummaryDao attenMonthlySummaryDao;
 	
 	@Autowired
 	private AttendenceReportDao attendenceReportDao;
@@ -76,10 +81,12 @@ public class MongoServiceImpl implements IMongoService {
 	}
 
 	@Override
-	public void refreshAttendenceReportByMonth(String month) throws ParseException {
+	public void refreshAttendenceReportByMonth(String month, String mobileParam) throws ParseException {
+		
 		// TODO Auto-generated method stub
 		SimpleDateFormat sf = new  SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sf2 = new  SimpleDateFormat("HH:mm");
+		SimpleDateFormat sf3 = new  SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 		Calendar startCalendar = Calendar.getInstance();//日历对象 
 		Calendar startCalendarTMP = Calendar.getInstance();//用于for循环获取当月的日期列表
@@ -99,13 +106,18 @@ public class MongoServiceImpl implements IMongoService {
 //		SimpleDateFormat sf1 = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //		Date startDateTime = sf1.parse(startDateTimeStr);
 //		Date endDateTime = sf1.parse(endDateTimeStr);
+        List<AttendenceBo> aBoList;
+        
+        //手机号参数为空，查询整月所有人数据
+        if(StringUtils.isEmpty(mobileParam)){
+        	aBoList = attendenceDao.findByStartEndDate(startDateTime.getTime()/1000, endDateTime.getTime()/1000);
+        //手机号不为空，查询指定用户
+        }else{
+        	aBoList = attendenceDao.findByStartEndDateAndMobile(startDateTime.getTime()/1000, endDateTime.getTime()/1000,mobileParam);
+        }
 		
-		List<AttendenceBo> aBoList = attendenceDao.findByStartEndDate(startDateTime.getTime()/1000, endDateTime.getTime()/1000);
-        //test
-        //List<AttendenceBo> aBoList = attendenceDao.findByStartEndDateAndMobile(startDateTime.getTime()/1000, endDateTime.getTime()/1000,"13951992063");
-		
+        //记录处理过的手机号，每个手机号只循环处理一次
 		List<String> mobileList = new ArrayList<String>(); 
-		
 		for(AttendenceBo abo : aBoList){
 			try{
 				//每个手机号只循环一次
@@ -113,6 +125,11 @@ public class MongoServiceImpl implements IMongoService {
 					continue;
 				}
 				mobileList.add(abo.getMobile());
+				
+				//for monthly summary 
+				int unCheckAmount = 0; //未打卡总数
+				int lateAmount = 0; //迟到数量
+				int earlyLeaveAmount = 0; //早退数量
 				
 				//查询当月用户是否已有数据
 				AttendenceReportBo aRBo = attendenceReportDao.findByMonthAndMobile(month, abo.getMobile());
@@ -147,8 +164,20 @@ public class MongoServiceImpl implements IMongoService {
 				String department = null != uinfo && null!=uinfo.getDepartment()?uinfo.getDepartment():"";
 				int sequence =  null != uinfo && null!=uinfo.getSequence()?uinfo.getSequence():10000;
 				String project = null != uinfo && null!=uinfo.getProject()?uinfo.getProject():"";
-				String amTime = null != uinfo && null!=uinfo.getAmTime()?uinfo.getAmTime():"8:30";
-				String pmTime = null != uinfo && null!=uinfo.getPmTime()?uinfo.getPmTime():"17:30";
+				String amTime = null != uinfo && null !=uinfo.getAmTime() && !"".equals(StringUtils.trimAllWhitespace(uinfo.getAmTime()))?StringUtils.trimAllWhitespace(uinfo.getAmTime()):"08:30";
+				String pmTime = null != uinfo && null!=uinfo.getPmTime() && !"".equals(StringUtils.trimAllWhitespace(uinfo.getPmTime()))?StringUtils.trimAllWhitespace(uinfo.getPmTime()):"17:30";
+//				amTime = StringUtils.trimAllWhitespace(amTime);
+//				pmTime = StringUtils.trimAllWhitespace(pmTime);
+				amTime.replaceAll("：", ":");
+				pmTime.replaceAll("：", ":");
+				
+				//8:30要改成 08:30
+				if(amTime.length() == 4){
+					amTime = "0" + amTime;
+				}
+				if(pmTime.length() == 4){
+					pmTime = "0" + pmTime;
+				}
 				
 				aRBo.setRealName(realName);
 				aRBo.setCompany(company);
@@ -225,16 +254,20 @@ public class MongoServiceImpl implements IMongoService {
 //					System.out.println(sf1.format(new Date(endtmp*1000)));
 					
 					//List<AttendenceBo> aBo = attendenceDao.findByAttendanceDateAndMobile(dateStr, abo.getMobile());
+					Date amCheckTime = null;
+					Date pmCheckTime = null;
 					if(null != aBos && aBos.size() > 0){
-						
 						if(aBos.size()==1){
-							
 							if("am".equals( aBos.get(0).getTag())){
-								attendenceDetail.put(dateStr, sf2.format(new Date(aBos.get(0).getAttendence_time() * 1000))+" - 未打卡");
+								amCheckTime = new Date(aBos.get(0).getAttendence_time() * 1000);
+								attendenceDetail.put(dateStr, sf2.format(amCheckTime)+" - 未打卡");
 							}else{
-								attendenceDetail.put(dateStr, "未打卡  - " + sf2.format(new Date(aBos.get(0).getAttendence_time() * 1000)));
+								pmCheckTime = new Date(aBos.get(0).getAttendence_time() * 1000);
+								attendenceDetail.put(dateStr, "未打卡  - " + sf2.format(pmCheckTime));
 							}
 						}else{
+							amCheckTime = new Date(aBos.get(0).getAttendence_time() * 1000);
+							pmCheckTime = new Date(aBos.get(aBos.size()-1).getAttendence_time() * 1000);
 							attendenceDetail.put(dateStr, sf2.format(new Date(aBos.get(0).getAttendence_time() * 1000)) 
 									+" - "+sf2.format(new Date(aBos.get(aBos.size()-1).getAttendence_time() * 1000)));
 						}
@@ -245,14 +278,62 @@ public class MongoServiceImpl implements IMongoService {
 						attendenceDetail.put(dateStr, "");
 					}
 					
+//					int unCheckAmount = 0; //未打卡总数
+//					int lateAmount = 0; //迟到数量
+//					int earlyLeaveAmount = 0; //早退数量
+					
+					////累加迟到、早退、未打卡次数(要跟每个人的上下班时间做对比，每个人配置不一样。默认8:30-17:30)
+//					//先判断是否节假日
+//					Calendar calendarT = Calendar.getInstance();//日历对象
+//					calendarT.setTime(amCheckTime);
+					int weekday = startCalendarTMP.get(Calendar.DAY_OF_WEEK) - 1;
+					if( weekday != 6 && weekday != 0){
+						
+						//累加迟到、早退、未打卡次数(要跟每个人的上下班时间做对比，每个人配置不一样。默认8:30-17:30)
+						if(null == amCheckTime){
+							unCheckAmount ++;
+						}else{
+							//组装当日要求打卡时间比较
+							String userAmCheckTimeStr = sf.format(amCheckTime) + " " + amTime;
+							Date userAmCheckTime = sf3.parse(userAmCheckTimeStr);
+							//实际打卡时间与要求打卡时间比较
+							if(amCheckTime.after(userAmCheckTime)){  // 从数据看取值
+								lateAmount ++;
+							}
+						}
+						
+						//累加迟到、早退、未打卡次数
+						if(null == pmCheckTime){
+							unCheckAmount ++;
+						}else{
+							//组装当日要求打卡时间比较
+							String userPmCheckTimeStr = sf.format(pmCheckTime) + " " + pmTime;
+							Date userPmCheckTime = sf3.parse(userPmCheckTimeStr);
+							//实际打卡时间与要求打卡时间比较
+							if(pmCheckTime.before(userPmCheckTime)){  // 从数据看取值
+								earlyLeaveAmount ++;
+							}
+						}
+					}
+					
+					//截取手机信息
 					for(AttendenceBo aboT : aBos){
 						String deviceInfo = aboT.getDevice_info();
 						if(!StringUtils.isEmpty(deviceInfo)){
-							String[] infos =  deviceInfo.split("udid");
-							if(infos.length > 1){
-								if(!devices.contains(infos[1].split("network")[0])){
-									devices.add(infos[1].split("network")[0]);
-								}
+							String udid = "";
+							String[] udidStrs =  deviceInfo.split("udid");
+							if(udidStrs.length > 1){
+								udid = StringUtils.trimWhitespace(udidStrs[1].split(",")[0]);
+							}
+							String phonemodel = "";
+							String[] phonemodels =  deviceInfo.split("phonemodel");
+							if(phonemodels.length > 1){
+								phonemodel = StringUtils.trimWhitespace(phonemodels[1].split(",")[0]);
+							}
+							
+							deviceInfo = "udid"+udid+",phonemodel"+ phonemodel;
+							if(!devices.contains(deviceInfo)){
+								devices.add(deviceInfo);
 							}
 						}
 					}
@@ -260,8 +341,13 @@ public class MongoServiceImpl implements IMongoService {
 				aRBo.setDeviceList(devices);
 				aRBo.setDeviceTotal(devices.size());
 				aRBo.setAttendenceDetail(attendenceDetail);
+				aRBo.setEarlyLeaveAmount(earlyLeaveAmount);
+				aRBo.setLateAmount(lateAmount);
+				aRBo.setUnCheckAmount(unCheckAmount);
 				
+				//更新每月报表
 				attendenceReportDao.saveOrUpdate(aRBo);
+				
 			}
 			catch(Exception e){
 				//e.printStackTrace();
@@ -269,21 +355,6 @@ public class MongoServiceImpl implements IMongoService {
 			}
 		}
 		
-		
-		
-		
 	}  
-	
-	  /**  
-     * 获取系统当前默认时区与指定时区的时间差.(单位:毫秒)  
-     *   
-     * @param timeZoneId  
-     *            时区Id  
-     * @return 系统当前默认时区与指定时区的时间差.(单位:毫秒)  
-     */  
-    private static int getDiffTimeZoneRawOffset(String timeZoneId) {   
-        return TimeZone.getDefault().getRawOffset()   
-                - TimeZone.getTimeZone(timeZoneId).getRawOffset();   
-    }   
 	
 }

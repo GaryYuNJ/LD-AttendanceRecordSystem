@@ -52,6 +52,28 @@ public class AttendenceReportBo implements Serializable {
 	private List<String> deviceList;
 	private int sequence;
 	
+	private int unCheckAmount; //当月未打卡总数
+	private int lateAmount; //当月迟到数量
+	private int earlyLeaveAmount; //当月早退数量
+	
+	public int getUnCheckAmount() {
+		return unCheckAmount;
+	}
+	public void setUnCheckAmount(int unCheckAmount) {
+		this.unCheckAmount = unCheckAmount;
+	}
+	public int getLateAmount() {
+		return lateAmount;
+	}
+	public void setLateAmount(int lateAmount) {
+		this.lateAmount = lateAmount;
+	}
+	public int getEarlyLeaveAmount() {
+		return earlyLeaveAmount;
+	}
+	public void setEarlyLeaveAmount(int earlyLeaveAmount) {
+		this.earlyLeaveAmount = earlyLeaveAmount;
+	}
 	public String getId() {
 		return id;
 	}

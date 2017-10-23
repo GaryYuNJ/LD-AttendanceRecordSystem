@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,43 @@ public class OpenAPIControl {
 	@Autowired
 	private IMongoService mongoService;
 	
-	//逐月更新考勤报表
+	
+	//测试，修改临时数据
+	@RequestMapping(value="test",method = { RequestMethod.GET,
+			RequestMethod.POST },produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String test(@RequestParam("month")  String month, @RequestParam("mobile")  String mobile, ModelMap model){
+		
+		//List<AttendenceBo> list = attendenceDao.list();
+		try {
+			
+			AttendenceReportBo aRBO = attendenceReportDao.findByMonthAndMobile(month, mobile);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "error";
+		}
+		return "ok";
+	}
+	
+	@RequestMapping(value="refreshDataByMonthAndMobile.json",method = { RequestMethod.GET,
+			RequestMethod.POST },produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String refreshDataByMonthAndMobile(@RequestParam("month")  String month, @RequestParam("mobile")  String mobile, ModelMap model){
+		
+		try {
+			mongoService.refreshAttendenceReportByMonth(month, mobile);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "error";
+		}
+		return "ok";
+	}
+	
+	
+	//更新月度考勤报表
 	@RequestMapping(value="refreshDataByMonth.json",method = { RequestMethod.GET,
 			RequestMethod.POST },produces = "application/json; charset=utf-8")
 	@ResponseBody
@@ -53,7 +90,7 @@ public class OpenAPIControl {
 		
 		//List<AttendenceBo> list = attendenceDao.list();
 		try {
-			mongoService.refreshAttendenceReportByMonth(month);
+			mongoService.refreshAttendenceReportByMonth(month,"");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -142,6 +179,10 @@ public class OpenAPIControl {
 		if(!StringUtils.isNullOrEmpty(user) ){
 			request.getSession().setAttribute("user", user);
 		}
+		//如果用户未登陆
+		if(null == request.getSession().getAttribute("user") || StringUtils.isNullOrEmpty(request.getSession().getAttribute("user").toString())){
+			return "redirect:http://admin.greenlandjs.com/auth/login";
+		}
 		
 		model.put("companys", this.getCompanyList(null == request.getSession().getAttribute("user")?"":request.getSession().getAttribute("user").toString()));
 		model.put("user", user);
@@ -157,6 +198,11 @@ public class OpenAPIControl {
 				
 		if(!StringUtils.isNullOrEmpty(user) ){
 			request.getSession().setAttribute("user", user);
+		}
+		
+		//如果用户未登陆
+		if(null == request.getSession().getAttribute("user") || StringUtils.isNullOrEmpty(request.getSession().getAttribute("user").toString())){
+			return "redirect:http://admin.greenlandjs.com/auth/login";
 		}
 		
 		model.put("companys", this.getCompanyList(null == request.getSession().getAttribute("user")?"":request.getSession().getAttribute("user").toString()));
@@ -374,6 +420,44 @@ public class OpenAPIControl {
 		}
 		
 		
+		return JSON.toJSONString(message);
+	}
+	
+	@RequestMapping(value="queryMonthSummary.json",method = { RequestMethod.GET,
+			RequestMethod.POST },produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String queryMonthSummary(HttpServletRequest request, @RequestParam("month")  String month, @RequestParam("company")  String company, 
+			String department, String mobile, String userName, String dataType, Integer limit, 
+			Integer offset, ModelMap model){
+		APIMessage message = new APIMessage();
+		Map<String, Long> result = new HashMap<String, Long>();
+		//如果用户未登陆
+		if(null == request.getSession().getAttribute("user") || StringUtils.isNullOrEmpty(request.getSession().getAttribute("user").toString())){
+			BootstrapTableData bData = new BootstrapTableData();
+			
+			result.put("unCheckAmount", 0L);
+			result.put("lateAmount", 0L);
+			result.put("earlyLeaveAmount", 0L);
+			
+			message.setContent(result);
+			message.setStatus(-10);
+			return JSON.toJSONString(message);
+		}
+		
+		if("1".equals(company)){
+			company = "";
+		}
+		Long unCheckAmount = attendenceReportDao.calculateMonthSumbyConditions(company, department, month, userName, mobile, "unCheckAmount");
+		Long lateAmount = attendenceReportDao.calculateMonthSumbyConditions(company, department, month, userName, mobile, "lateAmount");
+		Long earlyLeaveAmount = attendenceReportDao.calculateMonthSumbyConditions(company, department, month, userName, mobile, "earlyLeaveAmount");
+		
+
+		result.put("unCheckAmount", unCheckAmount);
+		result.put("lateAmount", lateAmount);
+		result.put("earlyLeaveAmount", earlyLeaveAmount);
+		
+		message.setContent(result);
+		message.setStatus(1);
 		return JSON.toJSONString(message);
 	}
 	

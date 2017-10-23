@@ -4,9 +4,11 @@ import java.text.ParseException;
 
 
 public interface IMongoService {
-	public void refreshAttendenceReportByMonth(String month) throws ParseException;
 
-	void refreshALLAttendenceReport() throws ParseException; 
+	void refreshALLAttendenceReport() throws ParseException;
+
+	void refreshAttendenceReportByMonth(String month, String mobileParam)
+			throws ParseException; 
 	
 	
 	

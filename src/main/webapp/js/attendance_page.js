@@ -145,9 +145,8 @@
 			     }  
 			});
 		  
-		    
+		  querySummaryInfo();
 		  
-		  //$('#userListTableId').bootstrapTable('refresh');
 	  };
     
 	  //user table 入参
@@ -168,6 +167,36 @@
 	    };
 	    return temp;
 	  }
+	 
+	 function querySummaryInfo() { 
+		 var useName = $("#userNameSearch").val();
+	     var mobile = $("#userMobileSearch").val();
+	     var  company = $("#companySearch").val();
+	     var  department = $("#departmentSearch").val();
+	     var  month = $("#monthSearch").val();
+	      
+		 $.ajax({
+			    url:rootUri + "/openApi/queryMonthSummary.json",
+			    data:{   useName : useName, mobile : mobile, company : company, department : department, month : month },  
+			    type:'get',  
+			    cache:false,  
+			    dataType:'json',  
+			    success:function(data) {
+			    	if(data.status == 1){
+			    		$('#unCheckAmount').val(data.content.unCheckAmount);  
+			    		$('#lateAmount').val(data.content.lateAmount);  
+			    		$('#earlyLeaveAmount').val(data.content.earlyLeaveAmount);  
+			    	}else if(data.status == -10){
+			    		windows.location = "http://admin.greenlandjs.com/auth/login";
+			    	}else{
+			    		alert("操作失败！");
+			    	}
+			     },  
+			     error : function() {
+			         alert("系统异常！");  
+			     }
+			});
+	 }
 	  
       //显示用户详情内容
 //	  var showUser = function (userId,userName) {
