@@ -90,12 +90,12 @@ public class MongoServiceImpl implements IMongoService {
 		
 		Calendar startCalendar = Calendar.getInstance();//日历对象 
 		Calendar startCalendarTMP = Calendar.getInstance();//用于for循环获取当月的日期列表
-		startCalendar.setTime(sf.parse(month+"-24"));//设置起始日期  
+		startCalendar.setTime(sf3.parse(month+"-24 06:00"));//设置起始日期 //当天的打卡数据（早上6点到第二天6点算当这一天的有效时间，同APP） 
 		startCalendar.add(Calendar.MONTH, -1);//月份减一 
         Date startDateTime = startCalendar.getTime();
         
         Calendar endCalendar = Calendar.getInstance();//日历对象 
-        endCalendar.setTime(sf.parse(month+"-24"));//设置结束日期
+        endCalendar.setTime(sf3.parse(month+"-24 06:00"));//设置结束日期//获取的打卡数据（早上6点到第二天6点算当这一天的有效时间，同APP）
         if(endCalendar.getTime().after(new Date())){
         	endCalendar.setTime(new Date());
         }
@@ -243,8 +243,8 @@ public class MongoServiceImpl implements IMongoService {
 //					}
 					
 					//获取当天的打卡数据（早上6点到第二天6点算当这一天的有效时间，同APP）
-					List<AttendenceBo> aBos = attendenceDao.findByStartEndDateAndMobile(startCalendarTMP.getTime().getTime()/1000 + 6 * 60 * 60, 
-							startCalendarTMP.getTime().getTime()/1000 + 30 * 60 * 60 , abo.getMobile());
+					List<AttendenceBo> aBos = attendenceDao.findByStartEndDateAndMobile(startCalendarTMP.getTime().getTime()/1000 , 
+							startCalendarTMP.getTime().getTime()/1000 + 24 * 60 * 60 , abo.getMobile());
 					
 //					Long starttmp = startCalendarTMP.getTime().getTime()/1000 + 6 * 60 * 60;
 //					Long endtmp = startCalendarTMP.getTime().getTime()/1000 + 30 * 60 * 60;

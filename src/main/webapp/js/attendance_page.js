@@ -57,6 +57,12 @@
 							columnTitle = "上班时间";
 						}else if(columnTitle == "pmWorkTime"){
 							columnTitle = "下班时间";
+						}else if(columnTitle == "lateAmount"){
+							columnTitle = "迟到次数";
+						}else if(columnTitle == "earlyLeaveAmount"){
+							columnTitle = "早退次数";
+						}else if(columnTitle == "unCheckAmount"){
+							columnTitle = "未打卡次数";
 						}
 						
 //						if(columnTitle == "remark"){

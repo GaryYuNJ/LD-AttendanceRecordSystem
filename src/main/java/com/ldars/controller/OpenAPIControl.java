@@ -254,6 +254,9 @@ public class OpenAPIControl {
 				Map<String, String> newMap= arbo.getAttendenceDetail();
 				newMap.put("remark", arbo.getRemark());
 				newMap.put("deviceTotal", arbo.getDeviceTotal()+"");
+				newMap.put("unCheckAmount", arbo.getUnCheckAmount()+"");
+				newMap.put("lateAmount", arbo.getLateAmount()+"");
+				newMap.put("earlyLeaveAmount", arbo.getEarlyLeaveAmount()+"");
 				map.add(newMap);
 			}
 			bData.setRows(map);
@@ -319,6 +322,19 @@ public class OpenAPIControl {
 			Map<String, String> column1 = new LinkedHashMap<String, String>();
 			column1.put("column", "deviceTotal");
 			columns.add(column1);
+			
+			//加上每月迟到数量
+			Map<String, String> lateAmount = new LinkedHashMap<String, String>();
+			lateAmount.put("column", "lateAmount");
+			columns.add(lateAmount);
+			//加上每月早退数量
+			Map<String, String> earlyLeaveAmount = new LinkedHashMap<String, String>();
+			earlyLeaveAmount.put("column", "earlyLeaveAmount");
+			columns.add(earlyLeaveAmount);
+			//加上每月未打卡数量
+			Map<String, String> unCheckAmount = new LinkedHashMap<String, String>();
+			unCheckAmount.put("column", "unCheckAmount");
+			columns.add(unCheckAmount);
 			//最后加上备注
 			Map<String, String> column = new LinkedHashMap<String, String>();
 			column.put("column", "remark");

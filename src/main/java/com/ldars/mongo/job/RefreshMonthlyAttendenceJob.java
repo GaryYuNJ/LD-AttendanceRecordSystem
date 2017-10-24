@@ -34,6 +34,7 @@ public class RefreshMonthlyAttendenceJob {
 		
 		//获取指定月份，和 上个月份的 string
 		String month = sf1.format(startCalendar.getTime());
+		logger.warn("refreshData() start. month=" + month);
 		//List<AttendenceBo> list = attendenceDao.list();
 		try {
 			mongoService.refreshAttendenceReportByMonth(month, "");
@@ -42,6 +43,7 @@ public class RefreshMonthlyAttendenceJob {
 			//e.printStackTrace();
 			logger.error("refreshData() error. ",e);
 		}
+		logger.warn("refreshData() end. month=" + month);
 	}
 	
 }

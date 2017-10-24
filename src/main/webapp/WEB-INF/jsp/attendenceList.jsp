@@ -149,6 +149,7 @@
 										<div class="col-lg-2">
 											<input type="text" id="earlyLeaveAmount" class="form-control" readonly placeholder="">
 										</div>
+										<label class="col-lg-2" >*排除周六、周日数据</label>
 									</div>
 								</form>
 							</div>
