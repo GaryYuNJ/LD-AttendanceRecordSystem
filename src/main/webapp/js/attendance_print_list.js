@@ -105,7 +105,7 @@
 			            Icons:'glyphicon-export',  
 			            exportOptions:{
 			                //ignoreColumn: [0,1],  //忽略某一列的索引  
-			            	ignoreColumn: [columns.length-1],  //忽略某一列的索引
+			            	//ignoreColumn: [columns.length-1],  //忽略某一列的索引
 			                fileName: '月度考勤报表',  //文件名称设置  
 			                worksheetName: 'sheet1',  //表格工作区名称  
 			                tableName: '月度考勤报表',  

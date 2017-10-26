@@ -232,10 +232,10 @@ public class MongoServiceImpl implements IMongoService {
 						if(aBos.size()==1){
 							if("am".equals( aBos.get(0).getTag())){
 								amCheckTime = new Date(aBos.get(0).getAttendence_time() * 1000);
-								attendenceDetail.put(dateStr, sf2.format(amCheckTime)+" - 未打卡");
+								attendenceDetail.put(dateStr, sf2.format(amCheckTime)+" - 无");
 							}else{
 								pmCheckTime = new Date(aBos.get(0).getAttendence_time() * 1000);
-								attendenceDetail.put(dateStr, "未打卡  - " + sf2.format(pmCheckTime));
+								attendenceDetail.put(dateStr, "无  - " + sf2.format(pmCheckTime));
 							}
 						}else{
 							amCheckTime = new Date(aBos.get(0).getAttendence_time() * 1000);
