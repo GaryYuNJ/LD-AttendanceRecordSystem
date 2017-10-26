@@ -211,36 +211,7 @@ public class MongoServiceImpl implements IMongoService {
 						startCalendarTMP.add(Calendar.DATE, +1)){
 					
 					String dateStr = sf.format(startCalendarTMP.getTime());
-//					//am 取当天第一条数据
-//					AttendenceBo aBoAM = attendenceDao.findByAttendanceDateMobileAndTag(dateStr, abo.getMobile(),"am",0);
-//					String aBoAMStr = null != aBoAM && null != aBoAM.getAttendence_time()?sf2.format(new Date(aBoAM.getAttendence_time()*1000)):"";
-////					//pm 取当天第最后一条数据
-//					AttendenceBo aBoPM = attendenceDao.findByAttendanceDateMobileAndTag(dateStr, abo.getMobile(),"pm",1);
-//					String aBoPMStr = null != aBoPM && null != aBoPM.getAttendence_time()?sf2.format(new Date(aBoPM.getAttendence_time()*1000)):"";
-//					attendenceDetail.put(dateStr, aBoAMStr+" - "+aBoPMStr);
-//					
-//					if(null != aBoAM && null != aBoAM.getDevice_info()){
-//						String deviceInfo = aBoAM.getDevice_info();
-//						if(!StringUtils.isEmpty(deviceInfo)){
-//							String[] infos =  deviceInfo.split("udid");
-//							if(infos.length > 1){
-//								if(!devices.contains(infos[1].split("network")[0])){
-//									devices.add(infos[1].split("network")[0]);
-//								}
-//							}
-//						}
-//					} 
-//					if(null != aBoPM && null != aBoPM.getDevice_info()){
-//						String deviceInfo = aBoPM.getDevice_info();
-//						if(!StringUtils.isEmpty(deviceInfo)){
-//							String[] infos =  deviceInfo.split("udid");
-//							if(infos.length > 1){
-//								if(!devices.contains(infos[1].split("network")[0])){
-//									devices.add(infos[1].split("network")[0]);
-//								}
-//							}
-//						}
-//					}
+					String dateWithYearStr = sf.format(startCalendarTMP.getTime());
 					
 					//获取当天的打卡数据（早上6点到第二天6点算当这一天的有效时间，同APP）
 					List<AttendenceBo> aBos = attendenceDao.findByStartEndDateAndMobile(startCalendarTMP.getTime().getTime()/1000 , 
@@ -307,7 +278,7 @@ public class MongoServiceImpl implements IMongoService {
 							unCheckAmount ++;
 						}else{
 							//组装当日要求打卡时间比较
-							String userPmCheckTimeStr = sf.format(pmCheckTime) + " " + pmTime;
+							String userPmCheckTimeStr = dateWithYearStr + " " + pmTime;
 							Date userPmCheckTime = sf3.parse(userPmCheckTimeStr);
 							//实际打卡时间与要求打卡时间比较
 							if(pmCheckTime.before(userPmCheckTime)){  // 从数据看取值

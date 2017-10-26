@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -167,6 +168,26 @@ public class OpenAPIControl {
 			}
 			
 			return companys;
+	}
+	
+	//临时页面
+	@RequestMapping(value="attendenceAdditionalPage",method=RequestMethod.GET)
+	public String attendenceAdditionalPage( HttpServletRequest request,
+			ModelMap model,  String user){
+		
+		//页面菜单样式需要
+		model.put("pageIndex", 0);
+				
+		if(!StringUtils.isNullOrEmpty(user) ){
+			request.getSession().setAttribute("user", user);
+		}
+		//如果用户未登陆
+		if(null == request.getSession().getAttribute("user") || StringUtils.isNullOrEmpty(request.getSession().getAttribute("user").toString())){
+			return "redirect:http://admin.greenlandjs.com/auth/login";
+		}
+		
+		model.put("user", user);
+		return "attendenceAdditionalPage";
 	}
 	
 	@RequestMapping(value="attendenceList",method=RequestMethod.GET)
@@ -414,6 +435,263 @@ public class OpenAPIControl {
 		
 		
 		return JSON.toJSONString(columns);
+	}
+
+	//只针对外勤人员的报表
+	@RequestMapping(value="attendenceAdditionalReportColumnName.json",method = { RequestMethod.GET,
+			RequestMethod.POST },produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String attendenceAdditionalReportColumnName(@RequestParam("month")  String month, String company, String department, 
+			String mobile, String userName, ModelMap model){
+		
+		BootstrapTableData bData = new BootstrapTableData();
+		bData.setPage(1);
+		bData.setPageSize(1);
+		List<AttendenceReportBo> arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, mobile, bData,"0");
+		List<Map<String, String>> columns = new ArrayList<Map<String, String>>();
+		if(null != arBos && arBos.size() > 0){
+			Map<String, String> map = arBos.get(0).getAttendenceDetail();
+			for(String key : map.keySet()){
+				Map<String, String> column = new LinkedHashMap<String, String>();
+				if(key.equals("month")
+						|| key.equals("project")
+						|| key.equals("mobile")
+						|| key.equals("amWorkTime")
+						|| key.equals("pmWorkTime")){
+					continue;
+				}
+				if(key.contains("2016-")){
+					key = key.replaceFirst("2016-", "");
+				}
+				if(key.contains("2017-")){
+					key = key.replaceFirst("2017-", "");
+				}
+				if(key.contains("2018-")){
+					key = key.replaceFirst("2018-", "");
+				}
+				if(key.contains("2019-")){
+					key = key.replaceFirst("2019-", "");
+				}
+				if(key.contains("2020-")){
+					key = key.replaceFirst("2020-", "");
+				}
+				column.put("column", key);
+				columns.add(column);
+			}
+			//最后加上备注
+			Map<String, String> column = new LinkedHashMap<String, String>();
+			column.put("column", "remark");
+			columns.add(column);
+		}
+		
+		return JSON.toJSONString(columns);
+	}
+	
+	//只针对外勤人员的报表
+	@RequestMapping(value="attendenceAdditionalReportList.json",method = { RequestMethod.GET,
+			RequestMethod.POST },produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String attendenceAdditionalReportList(HttpServletRequest request, @RequestParam("month")  String month, String company, 
+			String department, String mobile, String userName, String dataType, Integer limit, 
+			Integer offset, ModelMap model){
+		
+		//如果用户未登陆
+		if(null == request.getSession().getAttribute("user") || StringUtils.isNullOrEmpty(request.getSession().getAttribute("user").toString())){
+			BootstrapTableData bData = new BootstrapTableData();
+			return JSON.toJSONString(bData);
+		}
+		
+		BootstrapTableData bData = new BootstrapTableData();
+		List<AttendenceReportBo> arBosT = new ArrayList<AttendenceReportBo> ();
+		List<Map<String,String>> map = new ArrayList<Map<String,String>>();
+		//List<AttendenceReportBo> arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, mobile,null,dataType);
+		
+		Map<String, String> newMap= new LinkedHashMap<String, String>() ;
+		List<AttendenceReportBo> arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "13912049696",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "裴宏志");
+			newMap.put("company" , "江苏事业部");
+			newMap.put("department" , "总经理室");
+			newMap.put("mobile" , "13912049696");
+			
+			map.add(newMap);
+		}
+		
+		arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "13901870706",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "朱伟敏");
+			newMap.put("company" , "江苏事业部");
+			newMap.put("department" , "总经理室");
+			newMap.put("mobile" , "13901870706");
+			
+			map.add(newMap);
+		}
+		arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "18502134038",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "贾朝晖");
+			newMap.put("company" , "江苏事业部");
+			newMap.put("department" , "总经理室");
+			newMap.put("mobile" , "18502134038");
+			
+			map.add(newMap);
+		}
+		arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "15852484020",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "许光华");
+			newMap.put("company" , "江苏事业部");
+			newMap.put("department" , "总经理室");
+			newMap.put("mobile" , "15852484020");
+			
+			map.add(newMap);
+		}
+		
+		arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "18217324156",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "封莉");
+			newMap.put("company" , "江苏事业部");
+			newMap.put("department" , "财务部");
+			newMap.put("mobile" , "18217324156");
+			
+			map.add(newMap);
+		}
+		arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "13917089119",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "刘崇玲");
+			newMap.put("company" , "江苏事业部");
+			newMap.put("department" , "技术部");
+			newMap.put("mobile" , "13917089119");
+			
+			map.add(newMap);
+		}
+		
+		arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "13801655683",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "唐彪");
+			newMap.put("company" , "镇江公司");
+			newMap.put("department" , "总经理室");
+			newMap.put("mobile" , "13801655683");
+			
+			map.add(newMap);
+		}
+		
+		arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "18621247388",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "黄昊");
+			newMap.put("company" , "江苏事业部");
+			newMap.put("department" , "绿地会");
+			newMap.put("mobile" , "18621247388");
+			
+			map.add(newMap);
+		}
+
+		arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "15618542399",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "高亚社");
+			newMap.put("company" , "南部区域");
+			newMap.put("department" , "总经理室");
+			newMap.put("mobile" , "15618542399");
+			
+			map.add(newMap);
+		}
+		arBos = attendenceReportDao.selectPagebyConditions(company,department, month, userName, "13331838505",null,dataType);//裴宏志  - 总经理室
+		if(null != arBos && arBos.size() > 0){
+			arBosT.add(arBos.get(0));
+		}else{
+			//如果库里面不存在，造假数据
+			newMap= new LinkedHashMap<String, String>() ;
+			newMap.put("month" , month);
+			newMap.put("realName" , "陈志伟");
+			newMap.put("company" , "南京区域");
+			newMap.put("department" , "总经理室");
+			newMap.put("mobile" , "13331838505");
+			
+			map.add(newMap);
+		}
+		if(null != arBosT && arBosT.size() > 0){
+			
+			//重新组织数据,用于页面展示
+			for(AttendenceReportBo arbo : arBosT){
+				Map<String, String> newMapT = arbo.getAttendenceDetail();
+				Map<String, String> newMapT1 = new LinkedHashMap<String, String>();
+				System.out.println("第二种：通过Map.entrySet使用iterator遍历key和value：");
+		        Iterator<Map.Entry<String, String>> it = newMapT.entrySet().iterator();
+		        while (it.hasNext()) {
+		             Map.Entry<String, String> entry = it.next();
+		               //System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+		        
+		            String key = new String(entry.getKey());
+		            if(key.contains("2016-")){
+						key = key.replaceFirst("2016-", "");
+					}
+					if(key.contains("2017-")){
+						key = key.replaceFirst("2017-", "");
+					}
+					if(key.contains("2018-")){
+						key = key.replaceFirst("2018-", "");
+					}
+					if(key.contains("2019-")){
+						key = key.replaceFirst("2019-", "");
+					}
+					if(key.contains("2020-")){
+						key = key.replaceFirst("2020-", "");
+					}
+					newMapT1.put(key, null != entry.getValue() ? entry.getValue().replaceAll("未打卡", ""):entry.getValue());
+		        }
+		        newMapT.putAll(newMapT1);
+				newMapT.put("remark", arbo.getRemark());
+				map.add(newMapT);
+			}
+			
+		}
+		
+		bData.setRows(map);
+		
+		return JSON.toJSONString(bData);
 	}
 	
 

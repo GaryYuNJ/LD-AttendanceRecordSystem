@@ -28,9 +28,9 @@ public class RefreshMonthlyAttendenceJob {
 		//每月日期未上月24号到当月23号
 		Calendar startCalendar = Calendar.getInstance();//日历对象 
 		startCalendar.setTime(new Date());//设置日期  
-		if((new Date()).getDate() >= 24){
+		if((new Date()).getDate() > 24){
 			startCalendar.add(Calendar.MONTH, 1);//月份加
-		} 
+		}
 		
 		//获取指定月份，和 上个月份的 string
 		String month = sf1.format(startCalendar.getTime());

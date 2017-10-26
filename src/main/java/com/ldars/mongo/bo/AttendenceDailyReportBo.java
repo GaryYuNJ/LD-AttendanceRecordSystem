@@ -10,10 +10,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
   
 /** 
- *  每月的报表记录，每天job刷新
+ *  
  */  
-@Document(collection = "attendenceReport")  
-public class AttendenceReportBo implements Serializable {
+@Document(collection = "attendenceDailyReport")  
+public class AttendenceDailyReportBo implements Serializable {
 /*
 {
     "_id" : ObjectId("59b482196c9f4432d150dbec"),
