@@ -432,3 +432,10 @@ insert into admin_user_otherinfo (name,mobile,am_time,pm_time,sequence,company,d
 
 
 
+insert into admin_user_otherinfo (name,mobile,am_time,pm_time,sequence,company,department,project) values ('高登峰','13512518185','8:30','17:30',500,'一公司','技术部','');
+insert into admin_user_otherinfo (name,mobile,am_time,pm_time,sequence,company,department,project) values ('田檬歌','18020187065','8:30','17:30',500,'区域公司','咖啡店','');
+insert into admin_user_otherinfo (name,mobile,am_time,pm_time,sequence,company,department,project) values ('朱永刚','13771252364','8:30','17:30',500,'区域公司','物业','');
+insert into admin_user_otherinfo (name,mobile,am_time,pm_time,sequence,company,department,project) values ('薛光','15150598002','8:30','17:30',500,'江苏事业部','投资开发部','');
+
+
+

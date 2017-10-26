@@ -209,7 +209,26 @@ public class OpenAPIControl {
 		model.put("user", user);
 		return "attendenceList";
 	}
-	
+
+	@RequestMapping(value="attendencePrintList",method=RequestMethod.GET)
+	public String attendencePrintList( HttpServletRequest request,
+			ModelMap model,  String user){
+		
+		//页面菜单样式需要
+		model.put("pageIndex", 0);
+				
+		if(!StringUtils.isNullOrEmpty(user) ){
+			request.getSession().setAttribute("user", user);
+		}
+		//如果用户未登陆
+		if(null == request.getSession().getAttribute("user") || StringUtils.isNullOrEmpty(request.getSession().getAttribute("user").toString())){
+			return "redirect:http://admin.greenlandjs.com/auth/login";
+		}
+		
+		model.put("companys", this.getCompanyList(null == request.getSession().getAttribute("user")?"":request.getSession().getAttribute("user").toString()));
+		model.put("user", user);
+		return "attendencePrintList";
+	}
 
 	@RequestMapping(value="attendenceDailyList",method=RequestMethod.GET)
 	public String attendenceDailyList(HttpServletRequest request, ModelMap model, String user){

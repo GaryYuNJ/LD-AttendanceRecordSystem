@@ -87,6 +87,7 @@ public class MongoServiceImpl implements IMongoService {
 		SimpleDateFormat sf = new  SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sf2 = new  SimpleDateFormat("HH:mm");
 		SimpleDateFormat sf3 = new  SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat sf4 = new  SimpleDateFormat("MM-dd");
 		
 		Calendar startCalendar = Calendar.getInstance();//日历对象 
 		Calendar startCalendarTMP = Calendar.getInstance();//用于for循环获取当月的日期列表
@@ -210,7 +211,7 @@ public class MongoServiceImpl implements IMongoService {
 				for(;startCalendarTMP.getTime().getTime() < endCalendar.getTime().getTime(); 
 						startCalendarTMP.add(Calendar.DATE, +1)){
 					
-					String dateStr = sf.format(startCalendarTMP.getTime());
+					String dateStr = sf4.format(startCalendarTMP.getTime());
 					String dateWithYearStr = sf.format(startCalendarTMP.getTime());
 					
 					//获取当天的打卡数据（早上6点到第二天6点算当这一天的有效时间，同APP）
@@ -246,7 +247,7 @@ public class MongoServiceImpl implements IMongoService {
 						//法定假日判断、出差、请假判断
 						//.....
 						//attendenceDetail.put(dateStr, "缺勤");
-						attendenceDetail.put(dateStr, "");
+						attendenceDetail.put(dateStr, "-");
 					}
 					
 //					int unCheckAmount = 0; //未打卡总数
