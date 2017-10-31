@@ -269,7 +269,8 @@ public class MongoServiceImpl implements IMongoService {
 							String userAmCheckTimeStr = sf.format(amCheckTime) + " " + amTime;
 							Date userAmCheckTime = sf3.parse(userAmCheckTimeStr);
 							//实际打卡时间与要求打卡时间比较
-							if(amCheckTime.after(userAmCheckTime)){  // 从数据看取值
+							//if(amCheckTime.after(userAmCheckTime)){  // 从数据看取值
+							if((amCheckTime.getTime()-userAmCheckTime.getTime())/1000 >= 60){ //8点31前打卡的都不算
 								lateAmount ++;
 							}
 						}
