@@ -73,7 +73,7 @@ public class OpenAPIControl {
 	public String refreshDataByMonthAndMobile(@RequestParam("month")  String month, @RequestParam("mobile")  String mobile, ModelMap model){
 		
 		try {
-			mongoService.refreshAttendenceReportByMonth(month, mobile);
+			mongoService.refreshAttendenceReportByMonthExtend(month, mobile);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,7 +91,7 @@ public class OpenAPIControl {
 		
 		//List<AttendenceBo> list = attendenceDao.list();
 		try {
-			mongoService.refreshAttendenceReportByMonth(month,"");
+			mongoService.refreshAttendenceReportByMonthExtend(month,"");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -128,20 +128,54 @@ public class OpenAPIControl {
 			company2.setName("江苏事业部");
 			company2.setValue("江苏事业部");
 			SelectCompany company3 = new SelectCompany();
-			company3.setName("一公司");
-			company3.setValue("一公司");
+			company3.setName("南京一公司");
+			company3.setValue("南京一公司");
 			SelectCompany company4 = new SelectCompany();
-			company4.setName("二公司");
-			company4.setValue("二公司");
+			company4.setName("南京二公司");
+			company4.setValue("南京二公司");
 			SelectCompany company5 = new SelectCompany();
-			company5.setName("三公司");
-			company5.setValue("三公司");
+			company5.setName("南京三公司");
+			company5.setValue("南京三公司");
 			SelectCompany company6 = new SelectCompany();
-			company6.setName("四公司");
-			company6.setValue("四公司");
+			company6.setName("南京四公司");
+			company6.setValue("南京四公司");
 			SelectCompany company7 = new SelectCompany();
-			company7.setName("区域公司");
-			company7.setValue("区域公司");
+			company7.setName("南京区域公司");
+			company7.setValue("南京区域公司");
+			
+			SelectCompany company8 = new SelectCompany();
+			company8.setName("常州公司");
+			company8.setValue("常州公司");
+			SelectCompany company9 = new SelectCompany();
+			company9.setName("连云港公司");
+			company9.setValue("连云港公司");
+			SelectCompany company10 = new SelectCompany();
+			company10.setName("南通公司");
+			company10.setValue("南通公司");
+			SelectCompany company11 = new SelectCompany();
+			company11.setName("泰州公司");
+			company11.setValue("泰州公司");
+			SelectCompany company12 = new SelectCompany();
+			company12.setName("无锡公司");
+			company12.setValue("无锡公司");
+			SelectCompany company13 = new SelectCompany();
+			company13.setName("徐州东部公司");
+			company13.setValue("徐州东部公司");
+			SelectCompany company14 = new SelectCompany();
+			company14.setName("徐州新城公司");
+			company14.setValue("徐州新城公司");
+			SelectCompany company15 = new SelectCompany();
+			company15.setName("盐城公司");
+			company15.setValue("盐城公司");
+			SelectCompany company16 = new SelectCompany();
+			company16.setName("扬州公司");
+			company16.setValue("扬州公司");
+			SelectCompany company17 = new SelectCompany();
+			company17.setName("镇江公司");
+			company17.setValue("镇江公司");
+			SelectCompany company18 = new SelectCompany();
+			company18.setName("淮安公司");
+			company18.setValue("淮安公司");
 			
 			List<SelectCompany> companys = new ArrayList<SelectCompany>();
 			
@@ -153,6 +187,17 @@ public class OpenAPIControl {
 				companys.add(company5);
 				companys.add(company6);
 				companys.add(company7);
+				companys.add(company8);
+				companys.add(company9);
+				companys.add(company10);
+				companys.add(company11);
+				companys.add(company12);
+				companys.add(company13);
+				companys.add(company14);
+				companys.add(company15);
+				companys.add(company16);
+				companys.add(company17);
+				companys.add(company18);
 			}else if("admin000".equals(user)){
 				companys.add(company2);
 			}else if("admin001".equals(user)){
@@ -165,6 +210,28 @@ public class OpenAPIControl {
 				companys.add(company6);
 			}else if("admin005".equals(user)){
 				companys.add(company7);
+			}else if("changzhou".equals(user)){
+				companys.add(company8);
+			}else if("lianyungang".equals(user)){
+				companys.add(company9);
+			}else if("nantong".equals(user)){
+				companys.add(company10);
+			}else if("taizhou".equals(user)){
+				companys.add(company11);
+			}else if("wuxi".equals(user)){
+				companys.add(company12);
+			}else if("xuzhoudong".equals(user)){
+				companys.add(company13);
+			}else if("xuzhouxincheng".equals(user)){
+				companys.add(company14);
+			}else if("yancheng".equals(user)){
+				companys.add(company15);
+			}else if("yangzhou".equals(user)){
+				companys.add(company16);
+			}else if("zhenjiang".equals(user)){
+				companys.add(company17);
+			}else if("huaian".equals(user)){
+				companys.add(company18);
 			}
 			
 			return companys;

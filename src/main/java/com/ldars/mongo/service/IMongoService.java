@@ -7,7 +7,10 @@ public interface IMongoService {
 
 	void refreshALLAttendenceReport() throws ParseException;
 
-	void refreshAttendenceReportByMonth(String month, String mobileParam)
+	void refreshAttendenceReportByMonth_old(String month, String mobileParam)
+			throws ParseException;
+
+	void refreshAttendenceReportByMonthExtend(String month, String mobileParam)
 			throws ParseException; 
 	
 	

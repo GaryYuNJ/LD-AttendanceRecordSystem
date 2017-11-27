@@ -37,7 +37,7 @@ public class RefreshMonthlyAttendenceJob {
 		logger.warn("refreshData() start. month=" + month);
 		//List<AttendenceBo> list = attendenceDao.list();
 		try {
-			mongoService.refreshAttendenceReportByMonth(month, "");
+			mongoService.refreshAttendenceReportByMonthExtend(month, "");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();

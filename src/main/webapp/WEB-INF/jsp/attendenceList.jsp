@@ -62,16 +62,21 @@
 												<option value="财务部">财务部</option>
 												<option value="营销部">营销部</option>
 												<option value="技术部">技术部</option>
+												<option value="技术管理部">技术管理部</option>
 												<option value="工程部">工程部</option>
 												<option value="合约部">合约部</option>
 												<option value="投资开发部">投资开发部</option>
 												<option value="商业管理部">商业管理部</option>
+												<option value="运营管理部">运营管理部</option>
 												<option value="绿地会">绿地会</option>
 												<option value="人力资源部">人力资源部</option>
 												<option value="办公室">办公室</option>
 												<option value="运营管理部">运营管理部</option>
 												<option value="开发部">开发部</option>
 												<option value="客服部">客服部</option>
+												<option value="招商部">招商部</option>
+												<option value="物业">物业</option>
+												<option value="企服">企服</option>
 											</select>
 										</div>
 										<!-- 

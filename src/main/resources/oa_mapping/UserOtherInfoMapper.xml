@@ -13,10 +13,115 @@
     <result column="project" property="project" jdbcType="VARCHAR" />
   </resultMap>
   
+  <!-- 
    <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    SELECT u_id, name, mobile, am_time, pm_time, sequence, company, department, project 
+    SELECT u_id, name, mobile, am_time, pm_time, sequence+companySeq sequence, company, department, project 
     	FROM admin_user_otherinfo
 		where mobile = #{mobile,jdbcType=VARCHAR} order by sequence limit 1
+  </select>
+   -->
+  <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select u.id u_id, u.realname name, u.telephone mobile,
+        substring_index(o.name,'-',1) department,  
+        
+        CASE WHEN  o.name like '%-%' THEN substring_index(o.name, '-', -1)
+		ELSE '' END project,
+        <!-- 
+        CASE WHEN  o1.name like '%区域公司%' THEN '南京区域公司'
+        WHEN  o1.name like '%一公司%' THEN '南京一公司'
+        WHEN  o1.name like '%二公司%' THEN '南京二公司'
+        WHEN  o1.name like '%三公司%' THEN '南京三公司'
+        WHEN  o1.name like '%四公司%' THEN '南京四公司'
+        WHEN  o1.name like '%江苏事业部%' THEN '江苏事业部'
+		ELSE o1.name END company,
+		 -->
+		CASE WHEN  o1.name like '%_%' THEN substring_index(o1.name, '_', -1)
+		ELSE o1.name END company,
+		
+		ao.am_time, ao.pm_time, 
+        ao.sequence+ao.companySeq sequence
+		
+		from admin_user u 
+		left join admin_organization o on o.id=u.organization_id 
+		left join admin_organization o1 on o1.id=o.parent
+		left join admin_user_otherinfo ao on u.telephone = ao.mobile
+		where o1.name is not null 
+        and o1.name like '%绿地集团%' 
+        and u.telephone = #{mobile,jdbcType=VARCHAR} 
+        order by sequence limit 1
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select u.id u_id, u.realname name, u.telephone mobile,
+        substring_index(o.name,'-',1) department,  
+        
+        CASE WHEN  o.name like '%-%' THEN substring_index(o.name, '-', -1)
+		ELSE '' END project,
+        
+        <!-- 
+        CASE WHEN  o1.name like '%区域公司%' THEN '南京区域公司'
+        WHEN  o1.name like '%一公司%' THEN '南京一公司'
+        WHEN  o1.name like '%二公司%' THEN '南京二公司'
+        WHEN  o1.name like '%三公司%' THEN '南京三公司'
+        WHEN  o1.name like '%四公司%' THEN '南京四公司'
+        WHEN  o1.name like '%江苏事业部%' THEN '江苏事业部'
+		ELSE o1.name END company,
+		 -->
+		CASE WHEN  o1.name like '%_%' THEN substring_index(o1.name, '_', -1)
+		ELSE o1.name END company,
+		
+		ao.am_time, ao.pm_time, 
+        ao.sequence+ao.companySeq sequence
+		
+		from admin_user u 
+		left join admin_organization o on o.id=u.organization_id 
+		left join admin_organization o1 on o1.id=o.parent
+		left join admin_user_otherinfo ao on u.telephone = ao.mobile
+		where o1.name is not null 
+        and o1.name like '%绿地集团%' 
+        and u.telephone not in (
+        '17755572287','13952078610','17366001910',
+        '17312276662','13851781324','17366010645',
+        '13813959088','18994018881','18538469566'
+        )
+  </select>
+  
+  <select id="selectNotCheckedUser" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select u.id u_id, u.realname name, u.telephone mobile,
+        substring_index(o.name,'-',1) department,  
+        
+        CASE WHEN  o.name like '%-%' THEN substring_index(o.name, '-', -1)
+		ELSE '' END project,
+        
+        <!-- 
+        CASE WHEN  o1.name like '%区域公司%' THEN '南京区域公司'
+        WHEN  o1.name like '%一公司%' THEN '南京一公司'
+        WHEN  o1.name like '%二公司%' THEN '南京二公司'
+        WHEN  o1.name like '%三公司%' THEN '南京三公司'
+        WHEN  o1.name like '%四公司%' THEN '南京四公司'
+        WHEN  o1.name like '%江苏事业部%' THEN '江苏事业部'
+		ELSE o1.name END company,
+		 -->
+		CASE WHEN  o1.name like '%_%' THEN substring_index(o1.name, '_', -1)
+		ELSE o1.name END company,
+		
+		ao.am_time, ao.pm_time, 
+        ao.sequence+ao.companySeq sequence
+		
+		from admin_user u 
+		left join admin_organization o on o.id=u.organization_id 
+		left join admin_organization o1 on o1.id=o.parent
+		left join admin_user_otherinfo ao on u.telephone = ao.mobile
+		where o1.name is not null 
+        and o1.name like '%绿地集团%'
+        and u.telephone not in (
+        '17755572287','13952078610','17366001910',
+        '17312276662','13851781324','17366010645',
+        '13813959088','18994018881','18538469566'
+        )
+        and u.telephone not in (
+        	#{mobiles,jdbcType=VARCHAR}
+        )
   </select>
   
   <insert id="insert" parameterType="com.ldars.oa.model.UserOtherInfo" >
