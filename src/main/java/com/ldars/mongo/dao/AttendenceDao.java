@@ -169,4 +169,21 @@ public class AttendenceDao {
 			
 			return mongoTemplate.find(query, AttendenceBo.class);
 		}
+
+		public List<AttendenceBo> findByStartEndDateMobileAndUdid(long startTime,
+				long time2, String mobile, String udid) {
+			Criteria criteria = new Criteria();
+			criteria.andOperator(Criteria.where("mobile").is(mobile), 
+					Criteria.where("attendence_time").gte(startTime).lte(time2),
+					Criteria.where("device_info").regex(".*?" +udid+ ".*"));
+			Query query = new Query();
+			Order order = new Order(Direction.ASC, "attendence_time");
+			query.with(new Sort(order));
+			//query.limit(10);
+			//query.skip(1);
+			//Criteria criteria = new Criteria("tags").elemMatch(new Criteria("name").is("tagName_10"));
+			query.addCriteria(criteria);
+			
+			return mongoTemplate.find(query, AttendenceBo.class);
+		}
 }

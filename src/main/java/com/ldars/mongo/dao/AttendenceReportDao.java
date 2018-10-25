@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.ldars.data.BootstrapTableData;
+import com.ldars.mongo.bo.AttendenceBo;
 import com.ldars.mongo.bo.AttendenceReportBo;
 import com.ldars.mongo.bo.Pager;
 import com.mongodb.BasicDBObject;
@@ -225,6 +226,19 @@ public class AttendenceReportDao {
 	        }  
 	        return total;
 	        
+		}
+
+		public  List<AttendenceReportBo> findByMonthAndDeviceCount(String month, int count) {
+			// TODO Auto-generated method stub
+			Criteria criteria = new Criteria();
+			criteria.andOperator(Criteria.where("month").is(month), 
+					Criteria.where("deviceTotal").gte(count));
+			Query query = new Query();
+			Order order = new Order(Direction.ASC, "company");
+			query.with(new Sort(order));
+			query.addCriteria(criteria);
+			
+			return mongoTemplate.find(query, AttendenceReportBo.class);
 		}
 		
 }

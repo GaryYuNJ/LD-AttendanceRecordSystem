@@ -139,6 +139,8 @@ insert into admin_user_otherinfo (name,company,department,mobile,project,am_time
 insert into admin_user_otherinfo (name,company,department,mobile,project,am_time,pm_time,sequence,companySeq) values ('何绍轩', '江苏事业部', '投资开发部', '18551715890', '', '8:30', '17:30', 77,1);
 insert into admin_user_otherinfo (name,company,department,mobile,project,am_time,pm_time,sequence,companySeq) values ('华琳', '江苏事业部', '投资开发部', '13951889134', '', '8:30', '17:30', 78,1);
 insert into admin_user_otherinfo (name,company,department,mobile,project,am_time,pm_time,sequence,companySeq) values ('朱健国', '江苏事业部', '商业管理部', '13382038066', '', '8:30', '17:30', 79,1);
+insert into admin_user_otherinfo (name,company,department,mobile,project,am_time,pm_time,sequence,companySeq) values ('杨勤英', '江苏事业部', '商业管理部', '18680211137', '', '8:30', '17:30', 79,1);
+
 insert into admin_user_otherinfo (name,company,department,mobile,project,am_time,pm_time,sequence,companySeq) values ('杨勤英', '江苏事业部', '商业管理部', '18650211137', '', '8:30', '17:30', 80,1);
 insert into admin_user_otherinfo (name,company,department,mobile,project,am_time,pm_time,sequence,companySeq) values ('朱玲', '江苏事业部', '商业管理部', '18795873315', '', '8:30', '17:30', 81,1);
 insert into admin_user_otherinfo (name,company,department,mobile,project,am_time,pm_time,sequence,companySeq) values ('吕琦', '江苏事业部', '商业管理部', '18851607371', '', '8:30', '17:30', 82,1);

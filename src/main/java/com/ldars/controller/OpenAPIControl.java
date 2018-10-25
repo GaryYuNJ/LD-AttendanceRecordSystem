@@ -67,6 +67,24 @@ public class OpenAPIControl {
 		return "ok";
 	}
 	
+	//测试，修改临时数据
+	@RequestMapping(value="refreshMonthlyUserUdidReport",method = { RequestMethod.GET,
+			RequestMethod.POST },produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String refreshMonthlyUserUdidReport(@RequestParam("month")  String month, ModelMap model){
+		
+		//List<AttendenceBo> list = attendenceDao.list();
+		try {
+			mongoService.refreshMonthlyUserUdidReport(month);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "error";
+		}
+		return "ok";
+	}
+	
 	@RequestMapping(value="refreshDataByMonthAndMobile.json",method = { RequestMethod.GET,
 			RequestMethod.POST },produces = "application/json; charset=utf-8")
 	@ResponseBody
@@ -176,6 +194,9 @@ public class OpenAPIControl {
 			SelectCompany company18 = new SelectCompany();
 			company18.setName("淮安公司");
 			company18.setValue("淮安公司");
+			SelectCompany company19 = new SelectCompany();
+			company19.setName("管培生");
+			company19.setValue("管培生");
 			
 			List<SelectCompany> companys = new ArrayList<SelectCompany>();
 			
@@ -198,6 +219,7 @@ public class OpenAPIControl {
 				companys.add(company16);
 				companys.add(company17);
 				companys.add(company18);
+				companys.add(company19);
 			}else if("admin000".equals(user)){
 				companys.add(company2);
 			}else if("admin001".equals(user)){
@@ -232,6 +254,8 @@ public class OpenAPIControl {
 				companys.add(company17);
 			}else if("huaian".equals(user)){
 				companys.add(company18);
+			}else if("guanpei".equals(user)){
+				companys.add(company19);
 			}
 			
 			return companys;

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ldars.oa.dao.UserUdidMonthlyReportMapper" >
+  <resultMap id="BaseResultMap" type="com.ldars.oa.model.UserUdidMonthlyReport" >
+    <result column="month" property="month" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_mobile" property="userMobile" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="udid" property="udid" jdbcType="VARCHAR" />
+    <result column="device_count" property="deviceCount" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="dates" property="dates" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="uidi_host_name" property="uidiHostName" jdbcType="VARCHAR" />
+    <result column="uidi_host_mobile" property="uidiHostMobile" jdbcType="VARCHAR" />
+    <result column="uidi_host_company" property="uidiHostCompany" jdbcType="VARCHAR" />
+    <result column="uidi_host_department" property="uidiHostDepartment" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+      month, user_name, user_mobile, 
+      company, department, udid, device_count,
+      count, dates, create_time, 
+      uidi_host_name, uidi_host_mobile, uidi_host_company, 
+      uidi_host_department
+  </sql>
+  
+  <resultMap id="ResultOfString" type="java.lang.String">  
+       <result column="udid" property="udid" jdbcType="VARCHAR" />  
+   </resultMap>  
+  
+   <select id="selectUdidByMonth" resultMap="ResultOfString">
+    select 
+      distinct udid      
+		from user_udid_monthly_report u 
+		where u.month = #{month,jdbcType=VARCHAR}
+        
+  </select>
+  
+  
+  <select id="selectByMonthAndudid" resultMap="BaseResultMap">
+    select 
+      month, user_name, user_mobile, 
+      company, department, udid, device_count,
+      count, dates, create_time, 
+      uidi_host_name, uidi_host_mobile, uidi_host_company, 
+      uidi_host_department
+      
+		from user_udid_monthly_report u 
+		
+		where u.month = #{month,jdbcType=VARCHAR}
+		and u.udid = #{udid,jdbcType=VARCHAR}
+		order by count desc
+        
+  </select>
+  
+  <insert id="insert" parameterType="com.ldars.oa.model.UserUdidMonthlyReport" >
+    insert into user_udid_monthly_report (month, user_name, user_mobile, 
+      company, department, udid, device_count,
+      count, dates, create_time, 
+      uidi_host_name, uidi_host_mobile, uidi_host_company, 
+      uidi_host_department)
+    values (#{month,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, 
+      #{company,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{udid,jdbcType=VARCHAR}, #{deviceCount,jdbcType=INTEGER},
+      #{count,jdbcType=INTEGER}, #{dates,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{uidiHostName,jdbcType=VARCHAR}, #{uidiHostMobile,jdbcType=VARCHAR}, #{uidiHostCompany,jdbcType=VARCHAR}, 
+      #{uidiHostDepartment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ldars.oa.model.UserUdidMonthlyReport" >
+    insert into user_udid_monthly_report
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userMobile != null" >
+        user_mobile,
+      </if>
+      <if test="company != null" >
+        company,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="udid != null" >
+        udid,
+      </if>
+       <if test="deviceCount != null" >
+        device_count,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="dates != null" >
+        dates,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="uidiHostName != null" >
+        uidi_host_name,
+      </if>
+      <if test="uidiHostMobile != null" >
+        uidi_host_mobile,
+      </if>
+      <if test="uidiHostCompany != null" >
+        uidi_host_company,
+      </if>
+      <if test="uidiHostDepartment != null" >
+        uidi_host_department,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="month != null" >
+        #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobile != null" >
+        #{userMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="udid != null" >
+        #{udid,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceCount != null" >
+        #{deviceCount,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="dates != null" >
+        #{dates,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uidiHostName != null" >
+        #{uidiHostName,jdbcType=VARCHAR},
+      </if>
+      <if test="uidiHostMobile != null" >
+        #{uidiHostMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="uidiHostCompany != null" >
+        #{uidiHostCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="uidiHostDepartment != null" >
+        #{uidiHostDepartment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByUdidAndMonthSelective" parameterType="com.ldars.oa.model.UserUdidMonthlyReport" >
+    update user_udid_monthly_report
+    <set >
+      <if test="uidiHostName != null" >
+       uidi_host_name  = #{uidiHostName,jdbcType=VARCHAR},
+      </if>
+      <if test="uidiHostMobile != null" >
+       uidi_host_mobile  = #{uidiHostMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="uidiHostCompany != null" >
+       uidi_host_company  = #{uidiHostCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="uidiHostDepartment != null" >
+       uidi_host_department  = #{uidiHostDepartment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where udid = #{udid,jdbcType=BIGINT}
+    and month = #{month,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

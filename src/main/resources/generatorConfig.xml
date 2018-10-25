@@ -8,7 +8,7 @@
 		    <property name="suppressAllComments" value="true" />      
 	 	</commentGenerator>   
 	 	
-		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.20.10:3306/ldoa" userId="root" password="1111ssSS"> 
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://43.254.53.219:3336/oav2" userId="oav2" password="oav2"> 
 		 </jdbcConnection> 
 		 
 		<javaTypeResolver> 
@@ -32,7 +32,7 @@
 		<table tableName="admin_user" domainObjectName="OAUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 		<table tableName="admin_organization" domainObjectName="OAOrganization" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 		 -->
-		<table tableName="admin_user_otherinfo" domainObjectName="UserOtherInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+		<table tableName="user_udid_monthly_report" domainObjectName="UserUdidMonthlyReport" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 		
 	</context> 
 </generatorConfiguration> 

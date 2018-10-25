@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /** 
  *  每月的报表记录，每天job刷新
  */  
-@Document(collection = "attendenceReport")  
+@Document(collection = "attendenceReportMonth")  
 public class AttendenceReportBo implements Serializable {
 /*
 {

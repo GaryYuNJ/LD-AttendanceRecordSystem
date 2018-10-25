@@ -11,7 +11,9 @@ public interface IMongoService {
 			throws ParseException;
 
 	void refreshAttendenceReportByMonthExtend(String month, String mobileParam)
-			throws ParseException; 
+			throws ParseException;
+
+	void refreshMonthlyUserUdidReport(String month) throws ParseException; 
 	
 	
 	

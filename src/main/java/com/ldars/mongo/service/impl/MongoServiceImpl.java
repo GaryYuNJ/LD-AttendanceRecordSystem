@@ -26,7 +26,9 @@ import com.ldars.mongo.dao.AttendenceReportDao;
 import com.ldars.mongo.service.IMongoService;
 import com.ldars.oa.dao.OAUserMapper;
 import com.ldars.oa.dao.UserOtherInfoMapper;
+import com.ldars.oa.dao.UserUdidMonthlyReportMapper;
 import com.ldars.oa.model.UserOtherInfo;
+import com.ldars.oa.model.UserUdidMonthlyReport;
 
 @Service("mongoService")
 public class MongoServiceImpl implements IMongoService {
@@ -50,6 +52,104 @@ public class MongoServiceImpl implements IMongoService {
 	
 	@Autowired  
 	private HttpSession session;
+	@Autowired  
+	UserUdidMonthlyReportMapper userUdidMonthlyReportMapper;
+	
+	//临时功能
+		@Override
+		public void refreshMonthlyUserUdidReport(String month) throws ParseException {
+			
+			//获取每月使用不同打卡手机数量超过0次用户月报表
+			List<AttendenceReportBo> userMonthReports = attendenceReportDao.findByMonthAndDeviceCount(month, 0);
+			
+			//获取每月起始时间与结束时间
+	        SimpleDateFormat sf = new  SimpleDateFormat("yyyy-MM-dd");
+	        SimpleDateFormat sf2 = new  SimpleDateFormat("HH:mm");
+	        SimpleDateFormat sf3 = new  SimpleDateFormat("yyyy-MM-dd HH:mm");
+	        SimpleDateFormat sf4 = new  SimpleDateFormat("MM-dd");
+	        
+	        Calendar startCalendar = Calendar.getInstance();//日历对象 
+	        Calendar startCalendarTMP = Calendar.getInstance();//用于for循环获取当月的日期列表
+	        startCalendar.setTime(sf3.parse(month+"-24 06:00"));//设置起始日期 //当天的打卡数据（早上6点到第二天6点算当这一天的有效时间，同APP） 
+	        startCalendar.add(Calendar.MONTH, -1);//月份减一 
+	        
+	        Calendar endCalendar = Calendar.getInstance();//日历对象 
+	        endCalendar.setTime(sf3.parse(month+"-24 06:00"));//设置结束日期//获取的打卡数据（早上6点到第二天6点算当这一天的有效时间，同APP）
+	        if(endCalendar.getTime().after(new Date())){
+	            //通过new Date()得到日期+06：00
+	            String date = sf.format(new Date());                
+	            endCalendar.setTime( sf3.parse(date+" 06:00"));
+	        }       
+	        
+			//循环处理每个用户
+			for(AttendenceReportBo reportBo : userMonthReports){
+				try{
+					for(String udid : reportBo.getDeviceList()){
+						//udid处理下，去除=
+						//"udid=6e7c54525f870b3b,phonemodel=HUAWEI Y600D-C00"
+						//"udid=14bd1236142b060392e51c1e3b7dcd76db4d70f7,phonemodel=iPhone"
+						
+						String udidTmp = udid;
+						if(StringUtils.isEmpty(udid)){
+							continue;
+						}else if(udid.contains("=")){
+							udidTmp = udid.split("=")[1].split(",")[0];
+						}
+						
+						List<AttendenceBo> attBos 
+							= attendenceDao.findByStartEndDateMobileAndUdid
+								(startCalendar.getTime().getTime()/1000, endCalendar.getTime().getTime()/1000, reportBo.getMobile(),udidTmp);
+						
+						//获取打卡日期列表
+						StringBuffer datesStr = new StringBuffer("");
+						for(AttendenceBo attendenceBo : attBos){
+							if(datesStr.toString().contains(attendenceBo.getAttendence_date())){
+								continue;
+							}
+							datesStr.append(attendenceBo.getAttendence_date()+",");
+						}
+						//获取打卡次数
+						int count = attBos.size();
+						
+						UserUdidMonthlyReport userUdidMonthlyReport = new UserUdidMonthlyReport();
+						userUdidMonthlyReport.setCompany(reportBo.getCompany());
+						userUdidMonthlyReport.setDeviceCount(reportBo.getDeviceTotal());
+						userUdidMonthlyReport.setCount(count);
+						userUdidMonthlyReport.setCreateTime(new Date());
+						userUdidMonthlyReport.setDates(datesStr.toString());
+						userUdidMonthlyReport.setDepartment(reportBo.getDepartment());
+						userUdidMonthlyReport.setUdid(udid);
+						userUdidMonthlyReport.setMonth(month);
+						userUdidMonthlyReport.setUserMobile(reportBo.getMobile());
+						userUdidMonthlyReport.setUserName(reportBo.getRealName());
+						
+						userUdidMonthlyReportMapper.insertSelective(userUdidMonthlyReport);
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			//获取每个udid最多的用户为主人，并更新到报表
+			//先获取每月udid list
+			List<String> udidList = userUdidMonthlyReportMapper.selectUdidByMonth(month);
+			//循环找到最多的记录为主人，并批量更新
+			UserUdidMonthlyReport userUdidMonthlyReportTmp = null;
+			for(String udid : udidList){
+				List<UserUdidMonthlyReport> list = userUdidMonthlyReportMapper.selectByMonthAndudid(month, udid);
+				if(null == list || list.size() == 0){
+					continue;
+				}
+				userUdidMonthlyReportTmp = new UserUdidMonthlyReport();
+				userUdidMonthlyReportTmp.setUdid(udid);
+				userUdidMonthlyReportTmp.setMonth(month);
+				userUdidMonthlyReportTmp.setUidiHostCompany(list.get(0).getCompany());
+				userUdidMonthlyReportTmp.setUidiHostDepartment(list.get(0).getDepartment());
+				userUdidMonthlyReportTmp.setUidiHostMobile(list.get(0).getUserMobile());
+				userUdidMonthlyReportTmp.setUidiHostName(list.get(0).getUserName());
+				userUdidMonthlyReportMapper.updateByUdidAndMonthSelective(userUdidMonthlyReportTmp);
+				//list.get(0)
+			}
+		}
 	
 	//临时功能
 	@Override
